@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <variable
+            name="film"
+            type="com.example.filmssurf.db.Film" />
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -17,7 +28,7 @@
         tools:srcCompat="@android:drawable/ic_menu_myplaces" />
 
     <TextView
-        android:id="@+id/tvLabel"
+        android:id="@+id/tvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -27,10 +38,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:fontFamily="@font/roboto_medium"
-        android:textStyle="bold"
         android:gravity="top"
         android:lineSpacingExtra="2sp"
-        android:textSize="24sp"
+        android:text="@{String.valueOf(film.title)}"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:translationY="-1.11sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivFilm"
@@ -38,7 +50,7 @@
         tools:text="Бегущий по лезвию 2049" />
 
     <TextView
-        android:id="@+id/tvDescription"
+        android:id="@+id/tvOverview"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -48,11 +60,12 @@
         android:layout_marginRight="16dp"
         android:fontFamily="@font/roboto_medium"
         android:gravity="top"
-        android:textSize="16sp"
+        android:text="@{String.valueOf(film.overview)}"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/cbFavorite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivFilm"
-        app:layout_constraintTop_toBottomOf="@+id/tvLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
         tools:text="Отставной детектив Рик Декард вновь восстановлен в полиции Лос-Анджелеса " />
 
     <CheckBox
@@ -61,7 +74,7 @@
         android:layout_height="wrap_content"
         android:button="@drawable/checkbox_favorite"
         android:checked="false"
-        android:clickable="false"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -73,11 +86,12 @@
         android:layout_marginLeft="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivFilm"
-        app:layout_constraintTop_toBottomOf="@+id/tvDescription"
+        app:layout_constraintTop_toBottomOf="@+id/tvOverview"
         app:srcCompat="@drawable/ic_calendar" />
 
     <TextView
         android:id="@+id/tvDate"
+        android:text="@{String.valueOf(film.release_date)}"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -91,3 +105,5 @@
         app:layout_constraintTop_toTopOf="@+id/ivCalendar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

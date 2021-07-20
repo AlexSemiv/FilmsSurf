@@ -4,25 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_background"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/svFilms"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/sv_rounded"
-        app:defaultQueryHint='Поиск по названию фильма'
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:queryBackground="@drawable/sv_rounded"
-        app:searchIcon="@drawable/ic_search"
-        app:submitBackground="@drawable/sv_rounded" />
+  <fragment
+      android:id="@+id/filmsNavHostFragment"
+      android:name="androidx.navigation.fragment.NavHostFragment"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      app:defaultNavHost = "true"
+      app:navGraph = "@navigation/films_navigation_graph"
+      app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+  <com.google.android.material.bottomnavigation.BottomNavigationView
+      android:id="@+id/bottomNavigationView"
+      app:menu="@menu/bottom_navigation_menu"
+      android:layout_width="match_parent"
+      android:layout_height="60dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
