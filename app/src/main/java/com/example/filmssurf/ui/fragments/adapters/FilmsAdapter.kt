@@ -12,9 +12,7 @@ import com.example.filmssurf.databinding.ItemFilmBinding
 import com.example.filmssurf.db.Film
 import okhttp3.internal.notify
 
-class FilmsAdapter(
-    private val idOfFavoriteFilms: List<Int>
-): RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
+class FilmsAdapter(): RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
 
     inner class FilmViewHolder(
         val binding: ItemFilmBinding
@@ -43,12 +41,18 @@ class FilmsAdapter(
         val film = differ.currentList[position]
 
         holder.binding.film = film
+
         holder.itemView.apply {
             Glide.with(this)
-                .load(film.poster_path)
+                .load("http://image.tmdb.org/t/p/w92${film.poster_path}")
                 .fitCenter()
+                .placeholder(R.drawable.ic_search)
                 .error(R.drawable.ic_refresh)
                 .into(holder.binding.ivFilm)
+        }
+
+        isFavoriteFilmListener?.let { isFavorite ->
+            holder.binding.cbFavorite.isChecked = isFavorite(film)
         }
 
         holder.itemView.setOnClickListener {
@@ -57,17 +61,13 @@ class FilmsAdapter(
             }
         }
 
-        holder.binding.cbFavorite.isChecked = idOfFavoriteFilms.contains(film.id)
-
         holder.binding.cbFavorite.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
                 isCheckedCheckBoxListener?.let { insert ->
-                    film.isFavorite = true
                     insert(film)
                 }
             } else {
                 isNotCheckedCheckBoxListener?.let { delete ->
-                    film.isFavorite = false
                     delete(film)
                 }
             }
@@ -77,6 +77,11 @@ class FilmsAdapter(
     private var onItemClickListener: ((Film) -> Unit)? = null
     fun setOnItemCLickListener(listener: (Film) -> Unit){
         onItemClickListener = listener
+    }
+
+    private var isFavoriteFilmListener: ((Film) -> Boolean)? = null
+    fun setOnFavoriteFilmListener(listener: (Film) -> Boolean) {
+        isFavoriteFilmListener = listener
     }
 
     private var isCheckedCheckBoxListener: ((Film) -> Unit)? = null

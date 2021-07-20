@@ -28,10 +28,9 @@ class FilmsViewModel @Inject constructor(
     val favoriteLiveData: LiveData<Resource<List<Film>>> = _favoriteLiveData
     private lateinit var favoriteFilms: List<Film>
 
-    var idOfFavoriteFilms = listOf<Int>()
+    var idOfFavoriteFilmsLiveData = repository.getIdOfFavoriteFilms()
 
     init {
-        getIdOfFavoriteFilms()
         setStartFilms()
         setFavoriteFilms()
     }
@@ -48,19 +47,13 @@ class FilmsViewModel @Inject constructor(
         _favoriteLiveData.postValue(Resource.Success(favoriteFilms))
     }
 
-    private fun getIdOfFavoriteFilms() = viewModelScope.launch(Dispatchers.IO) {
-        idOfFavoriteFilms = repository.getIdOfFavoriteFilms()
-    }
-
     fun saveFilmToFavorite(film: Film) = viewModelScope.launch(Dispatchers.IO) {
         repository.insertFilm(film)
-        getIdOfFavoriteFilms()
         setFavoriteFilms()
     }
 
     fun deleteFilmFromFavorite(film: Film) = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteFilm(film)
-        getIdOfFavoriteFilms()
         setFavoriteFilms()
     }
 }

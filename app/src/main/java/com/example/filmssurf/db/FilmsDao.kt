@@ -16,5 +16,5 @@ interface FilmsDao {
     suspend fun getFavoriteFilms(): List<Film>
 
     @Query("SELECT id FROM films")
-    suspend fun getIfOfFavoriteFilms(): List<Int>
+    fun getIfOfFavoriteFilms(): LiveData<List<Int>>
 }

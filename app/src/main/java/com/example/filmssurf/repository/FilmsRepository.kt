@@ -18,5 +18,5 @@ class FilmsRepository @Inject constructor(
 
     suspend fun getFavoriteFilms() = dao.getFavoriteFilms()
 
-    suspend fun getIdOfFavoriteFilms() = dao.getIfOfFavoriteFilms()
+    fun getIdOfFavoriteFilms() = dao.getIfOfFavoriteFilms()
 }

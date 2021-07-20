@@ -1,7 +1,6 @@
 package com.example.filmssurf.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import com.example.filmssurf.ui.MainActivity
 import com.example.filmssurf.ui.fragments.adapters.FilmsAdapter
 import com.example.filmssurf.viewmodel.FilmsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
@@ -47,7 +45,7 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = (activity as MainActivity).viewModel
-        filmsAdapter = FilmsAdapter(viewModel.idOfFavoriteFilms)
+        filmsAdapter = FilmsAdapter()
 
         binding?.rvFilms?.apply {
             adapter = filmsAdapter
@@ -56,6 +54,12 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
         }
 
         filmsAdapter.apply {
+            viewModel.idOfFavoriteFilmsLiveData.observe(viewLifecycleOwner) { filmsId ->
+                setOnFavoriteFilmListener { film ->
+                    filmsId.contains(film.id)
+                }
+            }
+
             setOnItemCLickListener { films ->
                 Toast.makeText(requireContext(), films.title, Toast.LENGTH_LONG).show()
             }
@@ -72,7 +76,6 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
         liveData.observe(viewLifecycleOwner) { result -> when(result) {
                 is Resource.Success -> {
                     result.data?.let { films ->
-                        //Log.d("Debug", films[0].toString())
                         hideSimpleProgressBar()
                         filmsAdapter.differ.submitList(films)
                     }
