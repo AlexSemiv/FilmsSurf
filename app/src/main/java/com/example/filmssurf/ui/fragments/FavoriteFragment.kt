@@ -1,5 +1,7 @@
 package com.example.filmssurf.ui.fragments
 
+import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.LiveData
 import com.example.filmssurf.db.Film
 import com.example.filmssurf.other.Resource
@@ -13,4 +15,10 @@ class FavoriteFragment: FilmsFragment() {
 
     override val refreshing: Job
         get() = viewModel.setFavoriteFilms()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding?.svFilms?.visibility = View.GONE
+    }
 }

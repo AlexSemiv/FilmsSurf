@@ -16,6 +16,11 @@ class FilmsRepository @Inject constructor(
             api.getTopFilms()
         }
 
+    suspend fun searchFilms(text: String) =
+        handleApiRequest {
+            api.searchFilms(query = text)
+        }
+
     suspend fun insertFilm(film: Film) = dao.insertFilm(film)
 
     suspend fun deleteFilm(film: Film) = dao.deleteFilm(film)

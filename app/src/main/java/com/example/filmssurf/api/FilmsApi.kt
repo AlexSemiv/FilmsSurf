@@ -26,4 +26,20 @@ interface FilmsApi {
         @Query("with_watch_monetization_types")
         with_watch_monetization_types: String = "flatrate"
     ) : Response<Result>
+
+    @GET("search/movie")
+    suspend fun searchFilms(
+        @Query("api_key")
+        api_key: String = API_KEY,
+        @Query("language")
+        language: String = "ru-RU",
+        @Query("query")
+        query: String,
+        @Query("page")
+        page: Int = 1,
+        @Query("include_adult")
+        include_adult: Boolean = false,
+        @Query("region")
+        region: String = "RU"
+    ) : Response<Result>
 }

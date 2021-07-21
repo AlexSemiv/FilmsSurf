@@ -24,16 +24,8 @@ class FilmsAdapter(): RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
             oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: Film, newItem: Film) =
-            oldItem.hashCode() == newItem.hashCode()
+            oldItem == newItem
     })
-
-    fun clearDiffer() {
-        differ.currentList.clear()
-    }
-
-    fun submitDiffer(films: List<Film>) {
-        differ.currentList.addAll(films)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = FilmViewHolder(
         DataBindingUtil.inflate(
@@ -69,17 +61,16 @@ class FilmsAdapter(): RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
 
         isFavoriteFilmListener?.let { isFavorite ->
             holder.binding.cbFavorite.isChecked = isFavorite(film)
+            film.isFavorite = isFavorite(film)
         }
 
         holder.binding.cbFavorite.setOnClickListener {
             if(!film.isFavorite){
                 isCheckedCheckBoxListener?.let { insert ->
-                    film.isFavorite = true
                     insert(film)
                 }
             } else {
                 isNotCheckedCheckBoxListener?.let { delete ->
-                    film.isFavorite = false
                     delete(film)
                 }
             }

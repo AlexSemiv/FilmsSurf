@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +20,7 @@ import com.example.filmssurf.other.Utils.DEBUG_TAG
 import com.example.filmssurf.ui.MainActivity
 import com.example.filmssurf.ui.fragments.adapters.FilmsAdapter
 import com.example.filmssurf.viewmodel.FilmsViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 
@@ -32,9 +34,10 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
     abstract val refreshing: Job
 
     private var _binding: FragmentFilmsBinding? = null
-    private val binding
+    val binding
         get() = _binding
     private var refreshJob: Job? = null
+    private var searchJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,17 +82,38 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
             }
         }
 
+        binding?.svFilms?.apply {
+            isSubmitButtonEnabled = false
+
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?) = false
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    searchJob?.cancel()
+                    Log.d(DEBUG_TAG, "searchJob active: ${searchJob?.isActive}")
+                    searchJob = lifecycleScope.launch(Dispatchers.Default) {
+                        if(isActive) {
+                            newText?.let { text ->
+                                if(text.length > 1){
+                                    viewModel.setFilmsInStartFragment(text)
+                                    Log.d(DEBUG_TAG, "searching: ${text}..")
+                                }
+                            }
+                        }
+                    }
+                    return true
+                }
+            })
+        }
+
         binding?.srlFilms?.apply {
             setOnRefreshListener {
                 refreshJob?.cancel()
+                Log.d(DEBUG_TAG, "refreshJob active: ${refreshJob?.isActive}")
                 refreshJob = lifecycleScope.launch(Dispatchers.Default) {
                     if(isActive) {
                         refreshing.join()
                         Log.d(DEBUG_TAG, "refreshing...")
-
-                        withContext(Dispatchers.Main){
-                            Toast.makeText(requireContext(), "Refreshing", Toast.LENGTH_SHORT).show()
-                        }
                     }
                 }
                 isRefreshing = false
@@ -111,7 +135,10 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
                         filmsAdapter.differ.submitList(films)
                     }
                     result.error?.let { message ->
-                        showErrorLayout(message)
+                        if(filmsAdapter.differ.currentList.isEmpty())
+                            showErrorLayout(message)
+                        else
+                            Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
                     }
                 }
                 is Resource.Loading -> {

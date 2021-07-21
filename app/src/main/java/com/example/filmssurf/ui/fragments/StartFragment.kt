@@ -12,5 +12,5 @@ class StartFragment: FilmsFragment(){
         get() = viewModel.startLiveData
 
     override val refreshing: Job
-        get() = viewModel.setStartFilms()
+        get() = viewModel.setFilmsInStartFragment()
 }

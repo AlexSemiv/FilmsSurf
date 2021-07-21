@@ -8,21 +8,20 @@
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/svFilms"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/sv_rounded"
-        app:defaultQueryHint='Поиск по названию фильма'
+        android:elevation="1dp"
+        android:queryHint="Поиск по названию фильма"
+        app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:queryBackground="@drawable/sv_rounded"
+        android:background="@drawable/sv_rounded"
         app:searchIcon="@drawable/ic_search"
-        app:submitBackground="@drawable/sv_rounded" />
+        app:closeIcon="@drawable/ic_close" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/srlFilms"
@@ -58,8 +57,7 @@
 
     <LinearLayout
         android:id="@+id/llError"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_marginStart="8dp"
@@ -68,6 +66,7 @@
         android:layout_marginRight="8dp"
         android:gravity="center|center_horizontal"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,8 +82,8 @@
             android:id="@+id/tvErrorMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
             android:gravity="center|center_horizontal"
+            android:textColor="@color/white"
             tools:text="Нам не удалось обработать Ваш запрос.\n Попробуйте еще раз." />
 
     </LinearLayout>

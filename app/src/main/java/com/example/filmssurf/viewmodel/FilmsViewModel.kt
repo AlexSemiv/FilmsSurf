@@ -15,7 +15,6 @@ import com.example.filmssurf.other.*
 import com.example.filmssurf.repository.FilmsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.IOException
 import javax.inject.Inject
@@ -35,38 +34,33 @@ class FilmsViewModel @Inject constructor(
     var idOfFavoriteFilmsLiveData = repository.getIdOfFavoriteFilms()
 
     init {
-        setStartFilms()
+        setFilmsInStartFragment()
         setFavoriteFilms()
     }
 
-    fun setStartFilms() = viewModelScope.launch {
+    fun setFilmsInStartFragment(query: String? = null) = viewModelScope.launch {
         _startLiveData.postValue(Resource.Loading())
         try {
             if(hasInternetConnection()) {
-                val startFilms = repository.getTopFilms()?.results ?: listOf()
-                _startLiveData.postValue(Resource.Success(startFilms))
+                if(query != null) {
+                    val searchFilms = repository.searchFilms(query)?.results ?: listOf()
+                    _startLiveData.postValue(Resource.Success(searchFilms))
+                } else {
+                    val startFilms = repository.getTopFilms()?.results ?: listOf()
+                    _startLiveData.postValue(Resource.Success(startFilms))
+                }
             } else {
                 _startLiveData.postValue(Resource.Error("Проверьте интернет соединение.\nНевозможо выполнить загрузку."))
             }
         } catch (e: IOException) {
             when(e) {
-                is ApiLimitException -> {
+                is ApiLimitException, is InvalidApiKeyException,
+                is InvalidFormatException, is ServiceOfflineException,
+                is InternalErrorException, is TimeoutRequestException-> {
                     _startLiveData.postValue(Resource.Error(e.message!!))
                 }
-                is InvalidFormatException -> {
-                    _startLiveData.postValue(Resource.Error(e.message!!))
-                }
-                is InvalidApiKeyException -> {
-                    _startLiveData.postValue(Resource.Error(e.message!!))
-                }
-                is ServiceOfflineException -> {
-                    _startLiveData.postValue(Resource.Error(e.message!!))
-                }
-                is InternalErrorException -> {
-                    _startLiveData.postValue(Resource.Error(e.message!!))
-                }
-                is TimeoutRequestException -> {
-                    _startLiveData.postValue(Resource.Error(e.message!!))
+                else -> {
+                    _startLiveData.postValue(Resource.Error(e.message ?: "IOException"))
                 }
             }
         }
