@@ -1,6 +1,7 @@
 package com.example.filmssurf.ui.fragments
 
 import android.os.Bundle
+import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import com.example.filmssurf.other.Resource
 import com.example.filmssurf.ui.MainActivity
 import com.example.filmssurf.ui.fragments.adapters.FilmsAdapter
 import com.example.filmssurf.viewmodel.FilmsViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -73,15 +75,23 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
             }
         }
 
-        liveData.observe(viewLifecycleOwner) { result -> when(result) {
+        liveData.observe(viewLifecycleOwner) { result ->
+            hideErrorLayout()
+            when(result) {
                 is Resource.Success -> {
+                    hideSimpleProgressBar()
                     result.data?.let { films ->
-                        hideSimpleProgressBar()
                         filmsAdapter.differ.submitList(films)
                     }
                 }
                 is Resource.Error -> {
-                    TODO("error")
+                    hideSimpleProgressBar()
+                    result.data?.let { films ->
+                        filmsAdapter.differ.submitList(films)
+                    }
+                    result.error?.let { message ->
+                        showErrorLayout(message)
+                    }
                 }
                 is Resource.Loading -> {
                     showSimpleProgressBar()
@@ -101,5 +111,14 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
 
     private fun showSimpleProgressBar() {
         binding?.pbFilms?.visibility = View.VISIBLE
+    }
+
+    private fun hideErrorLayout() {
+        binding?.llError?.visibility = View.GONE
+    }
+
+    private fun showErrorLayout(message: String){
+        binding?.llError?.visibility = View.VISIBLE
+        binding?.tvErrorMessage?.text = message
     }
 }

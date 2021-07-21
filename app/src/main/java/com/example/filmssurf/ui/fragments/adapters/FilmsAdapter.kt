@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.filmssurf.R
 import com.example.filmssurf.databinding.ItemFilmBinding
 import com.example.filmssurf.db.Film
+import com.example.filmssurf.other.Utils.POSTER_SIZE
 import okhttp3.internal.notify
 
 class FilmsAdapter(): RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
@@ -44,15 +45,12 @@ class FilmsAdapter(): RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
 
         holder.itemView.apply {
             Glide.with(this)
-                .load("http://image.tmdb.org/t/p/w92${film.poster_path}")
+                .load("https://image.tmdb.org/t/p/${POSTER_SIZE}${film.poster_path}")
+                .override(120,180)
                 .fitCenter()
-                .placeholder(R.drawable.ic_search)
-                .error(R.drawable.ic_refresh)
+                .placeholder(R.drawable.ic_downloading)
+                .error(R.drawable.ic_error_downloading)
                 .into(holder.binding.ivFilm)
-        }
-
-        isFavoriteFilmListener?.let { isFavorite ->
-            holder.binding.cbFavorite.isChecked = isFavorite(film)
         }
 
         holder.itemView.setOnClickListener {
@@ -61,13 +59,19 @@ class FilmsAdapter(): RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
             }
         }
 
-        holder.binding.cbFavorite.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
+        isFavoriteFilmListener?.let { isFavorite ->
+            holder.binding.cbFavorite.isChecked = isFavorite(film)
+        }
+
+        holder.binding.cbFavorite.setOnClickListener {
+            if(!film.isFavorite){
                 isCheckedCheckBoxListener?.let { insert ->
+                    film.isFavorite = true
                     insert(film)
                 }
             } else {
                 isNotCheckedCheckBoxListener?.let { delete ->
+                    film.isFavorite = false
                     delete(film)
                 }
             }
