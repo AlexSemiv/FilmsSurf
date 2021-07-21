@@ -32,8 +32,11 @@ class FilmsViewModel @Inject constructor(
     val favoriteLiveData: LiveData<Resource<List<Film>>> = _favoriteLiveData
 
     var idOfFavoriteFilmsLiveData = repository.getIdOfFavoriteFilms()
+    private var _films: List<Film>
 
     init {
+        _films = listOf()
+
         setFilmsInStartFragment()
         setFavoriteFilms()
     }
@@ -42,25 +45,23 @@ class FilmsViewModel @Inject constructor(
         _startLiveData.postValue(Resource.Loading())
         try {
             if(hasInternetConnection()) {
-                if(query != null) {
-                    val searchFilms = repository.searchFilms(query)?.results ?: listOf()
-                    _startLiveData.postValue(Resource.Success(searchFilms))
-                } else {
-                    val startFilms = repository.getTopFilms()?.results ?: listOf()
-                    _startLiveData.postValue(Resource.Success(startFilms))
-                }
+                _films = if(query != null)
+                    repository.searchFilms(query)?.results ?: listOf()
+                else
+                    repository.getTopFilms()?.results ?: listOf()
+                _startLiveData.postValue(Resource.Success(_films))
             } else {
-                _startLiveData.postValue(Resource.Error("Проверьте интернет соединение.\nНевозможо выполнить загрузку."))
+                _startLiveData.postValue(Resource.Error("Проверьте интернет соединение.\nНевозможо выполнить загрузку.", _films))
             }
         } catch (e: IOException) {
             when(e) {
                 is ApiLimitException, is InvalidApiKeyException,
                 is InvalidFormatException, is ServiceOfflineException,
-                is InternalErrorException, is TimeoutRequestException-> {
-                    _startLiveData.postValue(Resource.Error(e.message!!))
+                is InternalErrorException, is TimeoutRequestException -> {
+                    _startLiveData.postValue(Resource.Error(e.message!!, _films))
                 }
                 else -> {
-                    _startLiveData.postValue(Resource.Error(e.message ?: "IOException"))
+                    _startLiveData.postValue(Resource.Error(e.message ?: "IOException", _films))
                 }
             }
         }

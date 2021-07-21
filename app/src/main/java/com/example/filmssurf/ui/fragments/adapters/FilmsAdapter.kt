@@ -11,9 +11,8 @@ import com.example.filmssurf.R
 import com.example.filmssurf.databinding.ItemFilmBinding
 import com.example.filmssurf.db.Film
 import com.example.filmssurf.other.Utils.POSTER_SIZE
-import okhttp3.internal.notify
 
-class FilmsAdapter(): RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
+class FilmsAdapter: RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
 
     inner class FilmViewHolder(
         val binding: ItemFilmBinding

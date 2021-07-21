@@ -1,5 +1,6 @@
 package com.example.filmssurf.ui.fragments
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -125,21 +126,30 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
             when(result) {
                 is Resource.Success -> {
                     hideSimpleProgressBar()
+                    showHorizontalProgressBar()
                     result.data?.let { films ->
-                        filmsAdapter.differ.submitList(films)
+                        if(films.isNotEmpty())
+                            filmsAdapter.differ.submitList(films)
+                        else {
+                            filmsAdapter.differ.submitList(listOf())
+                            showErrorLayout("Ничего не найдено. Попробуйте изменить свой запрос.", R.drawable.ic_big_search)
+                        }
+                        hideHorizontalProgressBar()
                     }
                 }
                 is Resource.Error -> {
                     hideSimpleProgressBar()
+                    showHorizontalProgressBar()
                     result.data?.let { films ->
                         filmsAdapter.differ.submitList(films)
                     }
                     result.error?.let { message ->
                         if(filmsAdapter.differ.currentList.isEmpty())
-                            showErrorLayout(message)
+                            showErrorLayout(message, R.drawable.ic_alert_triangle)
                         else
                             Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
                     }
+                    hideHorizontalProgressBar()
                 }
                 is Resource.Loading -> {
                     showSimpleProgressBar()
@@ -165,8 +175,17 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
         binding?.llError?.visibility = View.GONE
     }
 
-    private fun showErrorLayout(message: String){
+    private fun showErrorLayout(message: String, icon: Int){
         binding?.llError?.visibility = View.VISIBLE
         binding?.tvErrorMessage?.text = message
+        binding?.ivErrorIcon?.setImageResource(icon)
+    }
+
+    private fun showHorizontalProgressBar() {
+        binding?.pbHorizontalLoading?.visibility = View.VISIBLE
+    }
+
+    private fun hideHorizontalProgressBar() {
+        binding?.pbHorizontalLoading?.visibility = View.INVISIBLE
     }
 }
