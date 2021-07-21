@@ -1,36 +1,40 @@
 package com.example.filmssurf.ui.fragments
 
 import android.os.Bundle
-import android.os.Message
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filmssurf.R
 import com.example.filmssurf.databinding.FragmentFilmsBinding
 import com.example.filmssurf.db.Film
 import com.example.filmssurf.other.Resource
+import com.example.filmssurf.other.Utils.DEBUG_TAG
 import com.example.filmssurf.ui.MainActivity
 import com.example.filmssurf.ui.fragments.adapters.FilmsAdapter
 import com.example.filmssurf.viewmodel.FilmsViewModel
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.*
 
 @AndroidEntryPoint
 abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
 
     lateinit var viewModel: FilmsViewModel
+    private lateinit var filmsAdapter: FilmsAdapter
+
     abstract val liveData: LiveData<Resource<List<Film>>>
+    abstract val refreshing: Job
 
     private var _binding: FragmentFilmsBinding? = null
     private val binding
         get() = _binding
-
-    lateinit var filmsAdapter: FilmsAdapter
+    private var refreshJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,6 +76,23 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
 
             setOnIsNotCheckedStateChangeListener { film ->
                 viewModel.deleteFilmFromFavorite(film)
+            }
+        }
+
+        binding?.srlFilms?.apply {
+            setOnRefreshListener {
+                refreshJob?.cancel()
+                refreshJob = lifecycleScope.launch(Dispatchers.Default) {
+                    if(isActive) {
+                        refreshing.join()
+                        Log.d(DEBUG_TAG, "refreshing...")
+
+                        withContext(Dispatchers.Main){
+                            Toast.makeText(requireContext(), "Refreshing", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                isRefreshing = false
             }
         }
 

@@ -39,7 +39,7 @@ class FilmsViewModel @Inject constructor(
         setFavoriteFilms()
     }
 
-    private fun setStartFilms() = viewModelScope.launch {
+    fun setStartFilms() = viewModelScope.launch {
         _startLiveData.postValue(Resource.Loading())
         try {
             if(hasInternetConnection()) {
@@ -72,7 +72,7 @@ class FilmsViewModel @Inject constructor(
         }
     }
 
-    private fun setFavoriteFilms() = viewModelScope.launch {
+    fun setFavoriteFilms() = viewModelScope.launch {
         _favoriteLiveData.postValue(Resource.Loading())
         val favoriteFilms = repository.getFavoriteFilms()
         _favoriteLiveData.postValue(Resource.Success(favoriteFilms))

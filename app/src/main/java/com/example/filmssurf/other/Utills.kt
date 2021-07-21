@@ -6,6 +6,9 @@ object Utils {
     const val DATABASE_NAME = "films_db.db"
     const val POSTER_SIZE = "w185"
 
+    // Tag for debug
+    const val DEBUG_TAG = "debug_tag"
+
     // HTTP Status
     const val SUCCESS_200 = 200
     const val UNSUCCESS_429 = 429

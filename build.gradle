@@ -53,4 +53,5 @@ ext {
     kotlinGlide = '4.11.0'
     kotlinRoom = '2.3.0'
     fragmentKTX = '1.3.5'
+    SRLayout = '1.1.0'
 }

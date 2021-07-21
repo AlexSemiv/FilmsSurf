@@ -26,6 +26,4 @@ interface FilmsApi {
         @Query("with_watch_monetization_types")
         with_watch_monetization_types: String = "flatrate"
     ) : Response<Result>
-
-
 }

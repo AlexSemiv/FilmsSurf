@@ -89,4 +89,7 @@ dependencies {
 
     // Activity KTX for viewModels()
     implementation "androidx.fragment:fragment-ktx:$fragmentKTX"
+
+    // SwipeRefreshLayout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$SRLayout"
 }

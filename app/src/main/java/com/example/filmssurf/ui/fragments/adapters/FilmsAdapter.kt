@@ -27,6 +27,14 @@ class FilmsAdapter(): RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
             oldItem.hashCode() == newItem.hashCode()
     })
 
+    fun clearDiffer() {
+        differ.currentList.clear()
+    }
+
+    fun submitDiffer(films: List<Film>) {
+        differ.currentList.addAll(films)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = FilmViewHolder(
         DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
