@@ -1,6 +1,5 @@
 package com.example.filmssurf.ui.fragments.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -11,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.example.filmssurf.R
 import com.example.filmssurf.databinding.ItemFilmBinding
 import com.example.filmssurf.db.Film
-import com.example.filmssurf.other.Utils.DEBUG_TAG
 import com.example.filmssurf.other.Utils.POSTER_SIZE
 
 class FilmsAdapter: RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
@@ -79,12 +77,12 @@ class FilmsAdapter: RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
     }
 
     private var onItemClickListener: ((Film) -> Unit)? = null
-    fun setOnItemCLickListener(listener: (Film) -> Unit){
+    fun setOnItemClickListener(listener: (Film) -> Unit){
         onItemClickListener = listener
     }
 
     private var isFavoriteFilmListener: ((Film) -> Boolean)? = null
-    fun setOnFavoriteFilmListener(listener: (Film) -> Boolean) {
+    fun setOnFavoriteFilmsListener(listener: (Film) -> Boolean) {
         isFavoriteFilmListener = listener
     }
 

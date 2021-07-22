@@ -63,12 +63,12 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
 
         filmsAdapter.apply {
             viewModel.idOfFavoriteFilmsLiveData.observe(viewLifecycleOwner) { filmsId ->
-                setOnFavoriteFilmListener { film ->
+                setOnFavoriteFilmsListener { film ->
                     filmsId.contains(film.id)
                 }
             }
 
-            setOnItemCLickListener { films ->
+            setOnItemClickListener { films ->
                 Toast.makeText(requireContext(), films.title, Toast.LENGTH_LONG).show()
             }
 
