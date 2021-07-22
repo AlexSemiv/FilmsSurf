@@ -32,45 +32,47 @@ class FilmsViewModel @Inject constructor(
     val favoriteLiveData: LiveData<Resource<List<Film>>> = _favoriteLiveData
 
     var idOfFavoriteFilmsLiveData = repository.getIdOfFavoriteFilms()
-    private var _films: List<Film>
+    private var _startFilms: List<Film>
+    private var _favoriteFilms: List<Film>
 
     init {
-        _films = listOf()
+        _startFilms = listOf()
+        _favoriteFilms = listOf()
 
         setFilmsInStartFragment()
         setFavoriteFilms()
     }
 
     fun setFilmsInStartFragment(query: String? = null) = viewModelScope.launch {
-        _startLiveData.postValue(Resource.Loading())
+        _startLiveData.postValue(Resource.Loading(_startFilms))
         try {
             if(hasInternetConnection()) {
-                _films = if(query != null)
+                _startFilms = if(query != null)
                     repository.searchFilms(query)?.results ?: listOf()
                 else
                     repository.getTopFilms()?.results ?: listOf()
-                _startLiveData.postValue(Resource.Success(_films))
+                _startLiveData.postValue(Resource.Success(_startFilms))
             } else {
-                _startLiveData.postValue(Resource.Error("Проверьте интернет соединение.\nНевозможо выполнить загрузку.", _films))
+                _startLiveData.postValue(Resource.Error("Проверьте интернет соединение.\nНевозможо выполнить загрузку.", _startFilms))
             }
         } catch (e: IOException) {
             when(e) {
                 is ApiLimitException, is InvalidApiKeyException,
                 is InvalidFormatException, is ServiceOfflineException,
                 is InternalErrorException, is TimeoutRequestException -> {
-                    _startLiveData.postValue(Resource.Error(e.message!!, _films))
+                    _startLiveData.postValue(Resource.Error(e.message!!, _startFilms))
                 }
                 else -> {
-                    _startLiveData.postValue(Resource.Error(e.message ?: "IOException", _films))
+                    _startLiveData.postValue(Resource.Error(e.message ?: "IOException", _startFilms))
                 }
             }
         }
     }
 
     fun setFavoriteFilms() = viewModelScope.launch {
-        _favoriteLiveData.postValue(Resource.Loading())
-        val favoriteFilms = repository.getFavoriteFilms()
-        _favoriteLiveData.postValue(Resource.Success(favoriteFilms))
+        _favoriteLiveData.postValue(Resource.Loading(_favoriteFilms))
+        _favoriteFilms = repository.getFavoriteFilms()
+        _favoriteLiveData.postValue(Resource.Success(_favoriteFilms))
     }
 
     fun saveFilmToFavorite(film: Film) = viewModelScope.launch(Dispatchers.IO) {

@@ -1,8 +1,6 @@
 package com.example.filmssurf.ui.fragments
 
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +15,6 @@ import com.example.filmssurf.R
 import com.example.filmssurf.databinding.FragmentFilmsBinding
 import com.example.filmssurf.db.Film
 import com.example.filmssurf.other.Resource
-import com.example.filmssurf.other.Utils.DEBUG_TAG
 import com.example.filmssurf.ui.MainActivity
 import com.example.filmssurf.ui.fragments.adapters.FilmsAdapter
 import com.example.filmssurf.viewmodel.FilmsViewModel
@@ -33,6 +30,7 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
 
     abstract val liveData: LiveData<Resource<List<Film>>>
     abstract val refreshing: Job
+    abstract val emptyListErrorMessage: String
 
     private var _binding: FragmentFilmsBinding? = null
     val binding
@@ -48,7 +46,7 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
 
         _binding = FragmentFilmsBinding.inflate(inflater, container, false)
 
-        return binding?.root
+        return _binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,7 +55,7 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
         viewModel = (activity as MainActivity).viewModel
         filmsAdapter = FilmsAdapter()
 
-        binding?.rvFilms?.apply {
+        _binding?.rvFilms?.apply {
             adapter = filmsAdapter
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
@@ -83,7 +81,7 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
             }
         }
 
-        binding?.svFilms?.apply {
+        _binding?.svFilms?.apply {
             isSubmitButtonEnabled = false
 
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -91,13 +89,11 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     searchJob?.cancel()
-                    Log.d(DEBUG_TAG, "searchJob active: ${searchJob?.isActive}")
                     searchJob = lifecycleScope.launch(Dispatchers.Default) {
                         if(isActive) {
                             newText?.let { text ->
                                 if(text.length > 1){
                                     viewModel.setFilmsInStartFragment(text)
-                                    Log.d(DEBUG_TAG, "searching: ${text}..")
                                 }
                             }
                         }
@@ -107,14 +103,12 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
             })
         }
 
-        binding?.srlFilms?.apply {
+        _binding?.srlFilms?.apply {
             setOnRefreshListener {
                 refreshJob?.cancel()
-                Log.d(DEBUG_TAG, "refreshJob active: ${refreshJob?.isActive}")
                 refreshJob = lifecycleScope.launch(Dispatchers.Default) {
                     if(isActive) {
                         refreshing.join()
-                        Log.d(DEBUG_TAG, "refreshing...")
                     }
                 }
                 isRefreshing = false
@@ -125,21 +119,20 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
             hideErrorLayout()
             when(result) {
                 is Resource.Success -> {
-                    hideSimpleProgressBar()
-                    showHorizontalProgressBar()
+                    hideCircleProgressBar()
+                    hideHorizontalProgressBar()
                     result.data?.let { films ->
                         if(films.isNotEmpty())
                             filmsAdapter.differ.submitList(films)
                         else {
                             filmsAdapter.differ.submitList(listOf())
-                            showErrorLayout("Ничего не найдено. Попробуйте изменить свой запрос.", R.drawable.ic_big_search)
+                            showErrorLayout(emptyListErrorMessage, R.drawable.ic_big_search)
                         }
-                        hideHorizontalProgressBar()
                     }
                 }
                 is Resource.Error -> {
-                    hideSimpleProgressBar()
-                    showHorizontalProgressBar()
+                    hideCircleProgressBar()
+                    hideHorizontalProgressBar()
                     result.data?.let { films ->
                         filmsAdapter.differ.submitList(films)
                     }
@@ -149,10 +142,14 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
                         else
                             Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
                     }
-                    hideHorizontalProgressBar()
                 }
                 is Resource.Loading -> {
-                    showSimpleProgressBar()
+                    result.data?.let { films ->
+                        if(films.isNotEmpty())
+                            showHorizontalProgressBar()
+                        else
+                            showCircleProgressBar()
+                    }
                 }
             }
         }
@@ -163,29 +160,29 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
         _binding = null
     }
 
-    private fun hideSimpleProgressBar() {
-        binding?.pbFilms?.visibility = View.GONE
+    private fun hideCircleProgressBar() {
+        _binding?.pbCircleLoading?.visibility = View.GONE
     }
 
-    private fun showSimpleProgressBar() {
-        binding?.pbFilms?.visibility = View.VISIBLE
+    private fun showCircleProgressBar() {
+        _binding?.pbCircleLoading?.visibility = View.VISIBLE
     }
 
     private fun hideErrorLayout() {
-        binding?.llError?.visibility = View.GONE
+        _binding?.llError?.visibility = View.GONE
     }
 
     private fun showErrorLayout(message: String, icon: Int){
-        binding?.llError?.visibility = View.VISIBLE
-        binding?.tvErrorMessage?.text = message
-        binding?.ivErrorIcon?.setImageResource(icon)
+        _binding?.llError?.visibility = View.VISIBLE
+        _binding?.tvErrorMessage?.text = message
+        _binding?.ivErrorIcon?.setImageResource(icon)
     }
 
     private fun showHorizontalProgressBar() {
-        binding?.pbHorizontalLoading?.visibility = View.VISIBLE
+        _binding?.pbHorizontalLoading?.visibility = View.VISIBLE
     }
 
     private fun hideHorizontalProgressBar() {
-        binding?.pbHorizontalLoading?.visibility = View.INVISIBLE
+        _binding?.pbHorizontalLoading?.visibility = View.INVISIBLE
     }
 }

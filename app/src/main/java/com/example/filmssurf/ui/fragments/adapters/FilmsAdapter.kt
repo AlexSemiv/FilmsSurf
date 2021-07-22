@@ -1,5 +1,6 @@
 package com.example.filmssurf.ui.fragments.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -10,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.filmssurf.R
 import com.example.filmssurf.databinding.ItemFilmBinding
 import com.example.filmssurf.db.Film
+import com.example.filmssurf.other.Utils.DEBUG_TAG
 import com.example.filmssurf.other.Utils.POSTER_SIZE
 
 class FilmsAdapter: RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {

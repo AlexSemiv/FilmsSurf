@@ -13,4 +13,7 @@ class StartFragment: FilmsFragment(){
 
     override val refreshing: Job
         get() = viewModel.setFilmsInStartFragment()
+
+    override val emptyListErrorMessage: String
+        get() = "Ничего не найдено. Попробуйте изменить свой запрос."
 }

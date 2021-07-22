@@ -57,7 +57,7 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar
-        android:id="@+id/pbFilms"
+        android:id="@+id/pbCircleLoading"
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
