@@ -57,16 +57,16 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
-        android:maxLines="5"
         android:fontFamily="@font/roboto_medium"
         android:gravity="top"
+        android:maxLines="6"
         android:text="@{String.valueOf(film.overview)}"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/cbFavorite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivFilm"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-        tools:text="Отставной детектив Рик Декард вновь восстановлен в полиции Лос-Анджелеса " />
+        tools:text="Отставной детектив Рик Декард вновь восстановлен в полиции Лос-Анджелеса. Отставной детектив Рик Декард вновь восстановлен в полиции Лос-Анджелеса. Отставной детектив Рик Декард вновь восстановлен в полиции Лос-Анджелеса." />
 
     <CheckBox
         android:id="@+id/cbFavorite"
