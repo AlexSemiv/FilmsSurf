@@ -66,10 +66,12 @@ class FilmsAdapter: RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
         holder.binding.cbFavorite.setOnClickListener {
             if(!film.isFavorite){
                 isCheckedCheckBoxListener?.let { insert ->
+                    film.isFavorite = true
                     insert(film)
                 }
             } else {
                 isNotCheckedCheckBoxListener?.let { delete ->
+                    film.isFavorite = false
                     delete(film)
                 }
             }
