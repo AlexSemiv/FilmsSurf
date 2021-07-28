@@ -76,11 +76,13 @@ class FilmsViewModel @Inject constructor(
     }
 
     fun saveFilmToFavorite(film: Film) = viewModelScope.launch(Dispatchers.IO) {
+        film.isFavorite = true
         repository.insertFilm(film)
         setFavoriteFilms()
     }
 
     fun deleteFilmFromFavorite(film: Film) = viewModelScope.launch(Dispatchers.IO) {
+        film.isFavorite = false
         repository.deleteFilm(film)
         setFavoriteFilms()
     }

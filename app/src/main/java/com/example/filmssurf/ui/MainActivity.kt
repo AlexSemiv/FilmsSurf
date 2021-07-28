@@ -26,5 +26,9 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setupWithNavController(
             findNavController(R.id.filmsNavHostFragment)
         )
+
+        binding.bottomNavigationView.setOnItemReselectedListener {
+            /* NO OPERATIONS */
+        }
     }
 }
