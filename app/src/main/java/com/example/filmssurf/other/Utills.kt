@@ -5,7 +5,7 @@ object Utils {
     const val BASE_URL = "https://api.themoviedb.org/3/"
     const val DATABASE_NAME = "films_db.db"
     const val POSTER_SIZE = "w185"
-    const val TIMEOUT_SEARCHING = 1000L
+    const val TIMEOUT_SEARCHING = 500L
 
     // Tag for debug
     const val DEBUG_TAG = "debug_tag"
