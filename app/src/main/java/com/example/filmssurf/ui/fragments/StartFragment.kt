@@ -11,8 +11,8 @@ class StartFragment: FilmsFragment(){
     override val liveData: LiveData<Resource<List<Film>>>
         get() = viewModel.startLiveData
 
-    override val refreshing: Job
-        get() = viewModel.setFilmsInStartFragment()
+    override val refreshing: () -> Job
+        get() = { viewModel.setFilmsInStartFragment() }
 
     override val emptyListErrorMessage: String
         get() = "Ничего не найдено. Попробуйте изменить свой запрос."

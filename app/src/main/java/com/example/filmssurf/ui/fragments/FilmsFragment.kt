@@ -29,7 +29,7 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
     private lateinit var filmsAdapter: FilmsAdapter
 
     abstract val liveData: LiveData<Resource<List<Film>>>
-    abstract val refreshing: Job
+    abstract val refreshing: () -> Job
     abstract val emptyListErrorMessage: String
 
     private var _binding: FragmentFilmsBinding? = null
@@ -108,7 +108,7 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
                 refreshJob?.cancel()
                 refreshJob = lifecycleScope.launch(Dispatchers.Default) {
                     if(isActive) {
-                        refreshing.join()
+                        refreshing.invoke()
                     }
                 }
                 isRefreshing = false

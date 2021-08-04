@@ -13,8 +13,8 @@ class FavoriteFragment: FilmsFragment() {
     override val liveData: LiveData<Resource<List<Film>>>
         get() = viewModel.favoriteLiveData
 
-    override val refreshing: Job
-        get() = viewModel.setFavoriteFilms()
+    override val refreshing: () -> Job
+        get() = { viewModel.setFavoriteFilms() }
 
     override val emptyListErrorMessage: String
         get() = "Вы пока что не добавили ни один фильм в \"Избранное\"..."
