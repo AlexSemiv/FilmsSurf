@@ -1,6 +1,7 @@
 package com.example.filmssurf.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,8 @@ import com.example.filmssurf.R
 import com.example.filmssurf.databinding.FragmentFilmsBinding
 import com.example.filmssurf.db.Film
 import com.example.filmssurf.other.Resource
+import com.example.filmssurf.other.Utils.DEBUG_TAG
+import com.example.filmssurf.other.Utils.TIMEOUT_SEARCHING
 import com.example.filmssurf.ui.MainActivity
 import com.example.filmssurf.ui.fragments.adapters.FilmsAdapter
 import com.example.filmssurf.viewmodel.FilmsViewModel
@@ -29,7 +32,7 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
     private lateinit var filmsAdapter: FilmsAdapter
 
     abstract val liveData: LiveData<Resource<List<Film>>>
-    abstract val refreshing: () -> Job
+    abstract val refreshFilms: suspend () -> Unit
     abstract val emptyListErrorMessage: String
 
     private var _binding: FragmentFilmsBinding? = null
@@ -68,8 +71,8 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
                 }
             }
 
-            setOnItemClickListener { films ->
-                Toast.makeText(requireContext(), films.title, Toast.LENGTH_LONG).show()
+            setOnItemClickListener { film ->
+                Toast.makeText(requireContext(), film.title, Toast.LENGTH_LONG).show()
             }
 
             setOnIsCheckedStateChangeListener { film ->
@@ -84,16 +87,26 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
         _binding?.svFilms?.apply {
             isSubmitButtonEnabled = false
 
+            var shouldSearch = false
+
+            setOnQueryTextFocusChangeListener { _, hasFocus ->
+                shouldSearch = hasFocus
+            }
+
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?) = false
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    searchJob?.cancel()
-                    searchJob = lifecycleScope.launch(Dispatchers.Default) {
-                        if(isActive) {
-                            newText?.let { text ->
-                                if(text.length > 1){
-                                    viewModel.setFilmsInStartFragment(text)
+                    if(shouldSearch) {
+                        searchJob?.cancel()
+                        searchJob = lifecycleScope.launch {
+                            delay(TIMEOUT_SEARCHING)
+                            if (isActive) {
+                                newText?.let { query ->
+                                    if (query.length > 1) {
+                                        Log.d(DEBUG_TAG, "searching $query ..")
+                                        viewModel.showFilmsInStartFragment(query)
+                                    }
                                 }
                             }
                         }
@@ -106,9 +119,10 @@ abstract class FilmsFragment: Fragment(R.layout.fragment_films) {
         _binding?.srlFilms?.apply {
             setOnRefreshListener {
                 refreshJob?.cancel()
-                refreshJob = lifecycleScope.launch(Dispatchers.Default) {
+                refreshJob = lifecycleScope.launch {
                     if(isActive) {
-                        refreshing.invoke()
+                        Log.d(DEBUG_TAG, "refreshing ..")
+                        refreshFilms.invoke()
                     }
                 }
                 isRefreshing = false

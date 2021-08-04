@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.filmssurf.FilmsApplication
 import com.example.filmssurf.db.Film
 import com.example.filmssurf.other.*
+import com.example.filmssurf.other.Utils.DEBUG_TAG
 import com.example.filmssurf.repository.FilmsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -32,18 +34,21 @@ class FilmsViewModel @Inject constructor(
     val favoriteLiveData: LiveData<Resource<List<Film>>> = _favoriteLiveData
 
     var idOfFavoriteFilmsLiveData = repository.getIdOfFavoriteFilms()
-    private var _startFilms: List<Film>
-    private var _favoriteFilms: List<Film>
+    private var _startFilms: List<Film> = listOf()
+    private var _favoriteFilms: List<Film> = listOf()
 
     init {
-        _startFilms = listOf()
-        _favoriteFilms = listOf()
+        viewModelScope.launch {
+            showFilmsInStartFragment()
+        }
 
-        setFilmsInStartFragment()
-        setFavoriteFilms()
+        viewModelScope.launch {
+            showFavoriteFilms()
+        }
     }
 
-    fun setFilmsInStartFragment(query: String? = null) = viewModelScope.launch {
+    suspend fun showFilmsInStartFragment(query: String? = null) {
+        Log.d(DEBUG_TAG, "setFilmsInStartFragment() ${if(query != null) "with $query" else ""}")
         _startLiveData.postValue(Resource.Loading(_startFilms))
         try {
             if(hasInternetConnection()) {
@@ -69,22 +74,25 @@ class FilmsViewModel @Inject constructor(
         }
     }
 
-    fun setFavoriteFilms() = viewModelScope.launch {
+    suspend fun showFavoriteFilms() {
+        Log.d(DEBUG_TAG, "setFavoriteFilms()")
         _favoriteLiveData.postValue(Resource.Loading(_favoriteFilms))
         _favoriteFilms = repository.getFavoriteFilms()
         _favoriteLiveData.postValue(Resource.Success(_favoriteFilms))
     }
 
     fun saveFilmToFavorite(film: Film) = viewModelScope.launch(Dispatchers.IO) {
+        Log.d(DEBUG_TAG, "save film: ${film.title}")
         film.isFavorite = true
         repository.insertFilm(film)
-        setFavoriteFilms()
+        showFavoriteFilms()
     }
 
     fun deleteFilmFromFavorite(film: Film) = viewModelScope.launch(Dispatchers.IO) {
+        Log.d(DEBUG_TAG, "delete film: ${film.title}")
         film.isFavorite = false
         repository.deleteFilm(film)
-        setFavoriteFilms()
+        showFavoriteFilms()
     }
 
 
