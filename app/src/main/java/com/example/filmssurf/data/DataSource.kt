@@ -1,4 +1,4 @@
-package com.example.courseworkdb.data
+package com.example.filmssurf.data
 
 import coursework.courseworkdb.SchoolEntity
 import coursework.courseworkdb.StudentEntity

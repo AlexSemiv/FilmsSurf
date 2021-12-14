@@ -1,12 +1,12 @@
-package com.example.courseworkdb.data
+package com.example.filmssurf.data
 
 import com.example.courseworkdb.CourseDatabase
+import com.example.filmssurf.data.DataSource
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import coursework.courseworkdb.SchoolEntity
 import coursework.courseworkdb.StudentEntity
 import coursework.courseworkdb.StudentSubjectCrossRefEntity
-import coursework.courseworkdb.SubjectEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext

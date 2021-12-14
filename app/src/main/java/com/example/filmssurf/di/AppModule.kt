@@ -3,8 +3,8 @@ package com.example.filmssurf.di
 import android.app.Application
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.courseworkdb.CourseDatabase
-import com.example.courseworkdb.data.DataSource
-import com.example.courseworkdb.data.DataSourceImpl
+import com.example.filmssurf.data.DataSource
+import com.example.filmssurf.data.DataSourceImpl
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 import dagger.Module

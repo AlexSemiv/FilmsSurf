@@ -3,7 +3,10 @@ package com.example.filmssurf.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.courseworkdb.data.CourseworkData
-import com.example.courseworkdb.data.DataSource
+import com.example.filmssurf.data.DataSource
+import coursework.courseworkdb.SchoolEntity
+import coursework.courseworkdb.StudentEntity
+import coursework.courseworkdb.SubjectEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -53,7 +56,25 @@ class TablesViewModel @Inject constructor(
 
     fun getAllSchools() = dataSource.getAllSchools()
 
+    fun deleteSchool(school: SchoolEntity) {
+        viewModelScope.launch {
+            dataSource.deleteSchoolByName(school._name)
+        }
+    }
+
     fun getAllStudents() = dataSource.getAllStudents()
 
+    fun deleteStudent(student: StudentEntity) {
+        viewModelScope.launch {
+            dataSource.deleteStudentByName(student._name)
+        }
+    }
+
     fun getAllSubjects() = dataSource.getAllSubjects()
+
+    fun deleteSubject(subject: SubjectEntity) {
+        viewModelScope.launch {
+            dataSource.deleteSubjectByName(subject._name)
+        }
+    }
 }

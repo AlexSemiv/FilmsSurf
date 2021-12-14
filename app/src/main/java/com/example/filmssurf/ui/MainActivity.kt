@@ -21,8 +21,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Toast.makeText(this, viewModel.toString(), Toast.LENGTH_SHORT).show()
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

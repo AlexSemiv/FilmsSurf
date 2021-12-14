@@ -15,4 +15,17 @@
         android:id="@+id/subjectsFragment2"
         android:name="com.example.filmssurf.ui.fragments.SubjectsFragment"
         android:label="SubjectsFragment" />
+    <dialog
+        android:id="@+id/schoolChangeDialog"
+        android:name="com.example.filmssurf.ui.fragments.adapters.school.SchoolChangeDialog"
+        android:label="SchoolChangeDialog" >
+        <argument
+            android:name="schoolName"
+            app:argType="string" />
+    </dialog>
+
+    <action
+        android:id="@+id/globalActionToSchoolChangeDialog"
+        app:destination="@id/schoolChangeDialog">
+    </action>
 </navigation>
