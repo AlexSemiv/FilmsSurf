@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/stocks_navigation_graph.xml"
+    app:startDestination="@id/schoolsFragment2">
+    <fragment
+        android:id="@+id/schoolsFragment2"
+        android:name="com.example.filmssurf.ui.fragments.SchoolsFragment"
+        android:label="SchoolsFragment" />
+    <fragment
+        android:id="@+id/studentsFragment2"
+        android:name="com.example.filmssurf.ui.fragments.StudentsFragment"
+        android:label="StudentsFragment" />
+    <fragment
+        android:id="@+id/subjectsFragment2"
+        android:name="com.example.filmssurf.ui.fragments.SubjectsFragment"
+        android:label="SubjectsFragment" />
+</navigation>
