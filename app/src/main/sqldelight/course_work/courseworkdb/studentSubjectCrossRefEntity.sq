@@ -1,0 +1,32 @@
+CREATE TABLE studentSubjectCrossRefEntity (
+    _student_name TEXT NOT NULL,
+    _subject_name TEXT NOT NULL,
+    FOREIGN KEY (_student_name)
+    REFERENCES studentEntity(_name)
+    ON DELETE CASCADE,
+    FOREIGN KEY (_subject_name)
+    REFERENCES subjectEntity(_name)
+    ON DELETE CASCADE
+);
+
+getStudentSubjectByStudentName:
+SELECT *
+FROM studentSubjectCrossRefEntity
+WHERE _student_name = :studentName;
+
+getStudentSubjectBySubjectName:
+SELECT *
+FROM studentSubjectCrossRefEntity
+WHERE _subject_name = :subjectName;
+
+getAllStudentSubject:
+SELECT *
+FROM studentSubjectCrossRefEntity;
+
+insertStudentSubject:
+INSERT OR REPLACE
+INTO studentSubjectCrossRefEntity
+VALUES (?, ?);
+
+deleteAllStudentSubject:
+DELETE FROM studentSubjectCrossRefEntity;

@@ -1,0 +1,36 @@
+CREATE TABLE schoolEntity (
+    _name TEXT NOT NULL PRIMARY KEY,
+    _specialization TEXT NOT NULL,
+    _address TEXT NOT NULL
+);
+
+getSchoolByName:
+SELECT *
+FROM schoolEntity
+WHERE _name = :name;
+
+getSchoolsBySpecialization:
+SELECT *
+FROM schoolEntity
+WHERE _specialization = :specialization;
+
+getSchoolsByAddress:
+SELECT *
+FROM schoolEntity
+WHERE _address = :address;
+
+getAllSchools:
+SELECT *
+FROM schoolEntity;
+
+insertSchool:
+INSERT OR REPLACE
+INTO schoolEntity
+VALUES (?, ?, ?);
+
+deleteSchoolByName:
+DELETE FROM schoolEntity
+WHERE _name = :name;
+
+deleteAllSchools:
+DELETE FROM schoolEntity;
