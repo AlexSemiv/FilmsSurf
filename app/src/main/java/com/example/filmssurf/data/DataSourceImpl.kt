@@ -45,6 +45,12 @@ class DataSourceImpl(
         return schoolQueries.getAllSchools().asFlow().mapToList()
     }
 
+    override suspend fun getAllSchoolNames(): List<String> {
+        return withContext(Dispatchers.IO) {
+            schoolQueries.getAllSchoolNames()
+        }.executeAsList()
+    }
+
     override suspend fun insertSchool(name: String, specialization: String, address: String) {
         withContext(Dispatchers.IO) {
             schoolQueries.insertSchool(

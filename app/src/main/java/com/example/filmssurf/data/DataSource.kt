@@ -27,6 +27,8 @@ interface DataSource {
 
     suspend fun deleteAllSchools()
 
+    suspend fun getAllSchoolNames() : List<String>
+
     //student
     suspend fun getStudentByName(name: String): StudentEntity?
 

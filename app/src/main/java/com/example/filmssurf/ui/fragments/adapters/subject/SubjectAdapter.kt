@@ -2,6 +2,7 @@ package com.example.filmssurf.ui.fragments.adapters.subject
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.example.filmssurf.base.BaseRecyclerAdapter
 import com.example.filmssurf.databinding.ListItemBinding
 import com.example.filmssurf.ui.fragments.adapters.student.StudentViewHolder
@@ -36,5 +37,6 @@ class SubjectAdapter @Inject constructor(
         holder.binding.ibDelete.setOnClickListener {
             onDeleteListener?.invoke(SubjectEntity(getItem(holder.adapterPosition)))
         }
+        holder.binding.ibChange.isVisible = false
     }
 }

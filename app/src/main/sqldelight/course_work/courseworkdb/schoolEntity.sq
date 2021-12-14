@@ -12,16 +12,24 @@ WHERE _name = :name;
 getSchoolsBySpecialization:
 SELECT *
 FROM schoolEntity
-WHERE _specialization = :specialization;
+WHERE _specialization = :specialization
+ORDER BY _name ASC;
 
 getSchoolsByAddress:
 SELECT *
 FROM schoolEntity
-WHERE _address = :address;
+WHERE _address = :address
+ORDER BY _name ASC;
+
+getAllSchoolNames:
+SELECT _name
+FROM schoolEntity
+ORDER BY _name ASC;
 
 getAllSchools:
 SELECT *
-FROM schoolEntity;
+FROM schoolEntity
+ORDER BY _name ASC;
 
 insertSchool:
 INSERT OR REPLACE

@@ -9,7 +9,8 @@ WHERE _name = :name;
 
 getAllSubjects:
 SELECT *
-FROM subjectEntity;
+FROM subjectEntity
+ORDER BY _name ASC;
 
 insertSubject:
 INSERT OR REPLACE

@@ -15,16 +15,19 @@ WHERE _name = :name;
 getStudentsBySemester:
 SELECT *
 FROM studentEntity
-WHERE _semester = :semester;
+WHERE _semester = :semester
+ORDER BY _name ASC;
 
 getStudentsBySchoolName:
 SELECT *
 FROM studentEntity
-WHERE _school_name = :schoolName;
+WHERE _school_name = :schoolName
+ORDER BY _name ASC;
 
 getAllStudents:
 SELECT *
-FROM studentEntity;
+FROM studentEntity
+ORDER BY _name ASC;
 
 insertStudent:
 INSERT OR REPLACE

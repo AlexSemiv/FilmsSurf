@@ -19,6 +19,11 @@ class StudentAdapter @Inject constructor(
         onDeleteListener = listener
     }
 
+    private var onChangeListener: ((StudentEntity) -> Unit)? = null
+    fun setChangeListener(listener: (StudentEntity) -> Unit) {
+        onChangeListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
         return StudentViewHolder(
             binding = ListItemBinding.inflate(
@@ -33,6 +38,9 @@ class StudentAdapter @Inject constructor(
         super.onBindViewHolder(holder, position)
         holder.binding.ibDelete.setOnClickListener {
             onDeleteListener?.invoke(getItem(holder.adapterPosition))
+        }
+        holder.binding.ibChange.setOnClickListener {
+            onChangeListener?.invoke(getItem(holder.adapterPosition))
         }
     }
 }

@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.filmssurf.R
 import com.example.filmssurf.base.BaseFragment
 import com.example.filmssurf.databinding.ListLayoutBinding
 import com.example.filmssurf.ui.MainActivity
@@ -34,6 +36,14 @@ class StudentsFragment: BaseFragment<ListLayoutBinding>() {
             adapter = studentAdapter.apply {
                 setDeleteListener {
                     viewModel?.deleteStudent(it)
+                }
+                setChangeListener {
+                    findNavController().navigate(
+                        R.id.globalActionToStudentChangeDialog,
+                        Bundle().apply {
+                            putString("studentName", it._name)
+                        }
+                    )
                 }
             }
             layoutManager = LinearLayoutManager(

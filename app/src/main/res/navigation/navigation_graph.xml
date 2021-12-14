@@ -15,6 +15,7 @@
         android:id="@+id/subjectsFragment2"
         android:name="com.example.filmssurf.ui.fragments.SubjectsFragment"
         android:label="SubjectsFragment" />
+
     <dialog
         android:id="@+id/schoolChangeDialog"
         android:name="com.example.filmssurf.ui.fragments.adapters.school.SchoolChangeDialog"
@@ -23,9 +24,20 @@
             android:name="schoolName"
             app:argType="string" />
     </dialog>
-
     <action
         android:id="@+id/globalActionToSchoolChangeDialog"
         app:destination="@id/schoolChangeDialog">
     </action>
+
+    <dialog
+        android:id="@+id/studentChangeDialog"
+        android:name="com.example.filmssurf.ui.fragments.adapters.student.StudentChangeDialog"
+        android:label="StudentChangeDialog">
+        <argument
+            android:name="studentName"
+            app:argType="string"/>
+    </dialog>
+    <action
+        android:id="@+id/globalActionToStudentChangeDialog"
+        app:destination="@id/studentChangeDialog"/>
 </navigation>

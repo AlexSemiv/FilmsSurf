@@ -12,16 +12,19 @@ CREATE TABLE studentSubjectCrossRefEntity (
 getStudentSubjectByStudentName:
 SELECT *
 FROM studentSubjectCrossRefEntity
-WHERE _student_name = :studentName;
+WHERE _student_name = :studentName
+ORDER BY _subject_name ASC;
 
 getStudentSubjectBySubjectName:
 SELECT *
 FROM studentSubjectCrossRefEntity
-WHERE _subject_name = :subjectName;
+WHERE _subject_name = :subjectName
+ORDER BY _student_name ASC;
 
 getAllStudentSubject:
 SELECT *
-FROM studentSubjectCrossRefEntity;
+FROM studentSubjectCrossRefEntity
+ORDER BY _student_name ASC, _subject_name ASC;
 
 insertStudentSubject:
 INSERT OR REPLACE

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -24,7 +25,6 @@ class SchoolChangeDialog : DialogFragment() {
     private val viewModel: ChangeViewModel by viewModels()
     private var dialogView: View? = null
 
-    private var etName: EditText? = null
     private var etAddress: EditText? = null
     private var etSpecialization: EditText? = null
 
@@ -45,14 +45,26 @@ class SchoolChangeDialog : DialogFragment() {
             )
 
         dialogView?.let {
-            etName = it.findViewById(R.id.etName)
             etAddress = it.findViewById(R.id.etAddress)
             etSpecialization = it.findViewById(R.id.etSpecialization)
         }
 
         return MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Change school")
+            .setTitle(args.schoolName)
             .setView(dialogView!!)
+            .setPositiveButton("Change") { _, _ ->
+                if(etAddress?.text.toString().isEmpty()
+                    || etSpecialization?.text.toString().isEmpty()) {
+                    Toast.makeText(requireContext(), "Fields can't be empty", Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.changeExistedSchool(
+                        name = args.schoolName,
+                        specialization = etSpecialization?.text.toString(),
+                        address = etAddress?.text.toString()
+                    )
+                }
+            }
+            .setNegativeButton("Cancel") { _, _ -> }
             .create()
     }
 
@@ -60,8 +72,6 @@ class SchoolChangeDialog : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.schoolLiveData.observe(viewLifecycleOwner) {
-            Log.d("DEBUG_TAG", it.toString())
-            etName?.text = (it?._name ?: "").toEditable()
             etAddress?.text = (it?._address ?: "").toEditable()
             etSpecialization?.text = (it?._specialization ?: "").toEditable()
         }
