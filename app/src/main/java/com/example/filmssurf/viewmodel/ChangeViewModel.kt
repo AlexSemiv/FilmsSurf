@@ -8,7 +8,10 @@ import com.example.filmssurf.data.DataSource
 import coursework.courseworkdb.SchoolEntity
 import coursework.courseworkdb.StudentEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -93,4 +96,8 @@ class ChangeViewModel @Inject constructor(
             )
         }
     }
+
+    fun getAllStudents() = dataSource.getAllStudents()
+
+    fun getStudentsBySubjectName(name: String) = dataSource.getStudentSubjectBySubjectName(name)
 }

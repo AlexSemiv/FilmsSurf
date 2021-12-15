@@ -40,6 +40,7 @@
     <action
         android:id="@+id/globalActionToStudentChangeDialog"
         app:destination="@id/studentChangeDialog"/>
+
     <dialog
         android:id="@+id/addSubjectsDialog"
         android:name="com.example.filmssurf.ui.fragments.adapters.student.AddSubjectsDialog"
@@ -51,4 +52,17 @@
     <action
         android:id="@+id/globalActionToAddSubjectsDialog"
         app:destination="@id/addSubjectsDialog"/>
+
+    <dialog
+        android:id="@+id/addStudentsDialog"
+        android:name="com.example.filmssurf.ui.fragments.adapters.subject.AddStudentsDialog"
+        android:label="AddStudentsDialog">
+        <argument
+            android:name="subjectName"
+            app:argType="string"/>
+    </dialog>
+    <action
+        android:id="@+id/globalActionToAddStudentsDialog"
+        app:destination="@id/addStudentsDialog"/>
+
 </navigation>

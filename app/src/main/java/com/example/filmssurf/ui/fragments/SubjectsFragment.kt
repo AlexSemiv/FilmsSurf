@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,6 +41,14 @@ class SubjectsFragment: BaseFragment<ListLayoutBinding>() {
         binding.rvFilms.apply {
             adapter = subjectAdapter.apply {
                 setShowMoreIcon(R.drawable.ic_student)
+                setAddStudentsListener {
+                    findNavController().navigate(
+                        R.id.globalActionToAddStudentsDialog,
+                        Bundle().apply {
+                            putString("subjectName", it._name)
+                        }
+                    )
+                }
                 setDeleteListener {
                     viewModel?.deleteSubject(it)
                 }

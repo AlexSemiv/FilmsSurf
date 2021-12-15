@@ -6,9 +6,6 @@ import androidx.core.view.isVisible
 import com.example.filmssurf.R
 import com.example.filmssurf.base.BaseRecyclerAdapter
 import com.example.filmssurf.databinding.ListItemBinding
-import com.example.filmssurf.ui.fragments.adapters.student.StudentViewHolder
-import coursework.courseworkdb.SchoolEntity
-import coursework.courseworkdb.StudentEntity
 import coursework.courseworkdb.SubjectEntity
 import dagger.hilt.android.scopes.FragmentScoped
 import javax.inject.Inject
@@ -18,9 +15,9 @@ class SubjectAdapter @Inject constructor(
     callback: SubjectDiffUtil
 ) : BaseRecyclerAdapter<String, ListItemBinding, SubjectViewHolder> (callback) {
 
-    private var onAddSubjectsListener: ((SubjectEntity) -> Unit)? = null
-    fun setAddSubjectsListener(listener: (SubjectEntity) -> Unit) {
-        onAddSubjectsListener = listener
+    private var onAddStudentsListener: ((SubjectEntity) -> Unit)? = null
+    fun setAddStudentsListener(listener: (SubjectEntity) -> Unit) {
+        onAddStudentsListener = listener
     }
 
     private var onDeleteListener: ((SubjectEntity) -> Unit)? = null
@@ -66,7 +63,7 @@ class SubjectAdapter @Inject constructor(
                 setImageResource(R.drawable.ic_add_student)
                 isVisible = true
                 setOnClickListener {
-                    onAddSubjectsListener?.invoke(SubjectEntity(getItem(holder.adapterPosition)))
+                    onAddStudentsListener?.invoke(SubjectEntity(getItem(holder.adapterPosition)))
                 }
             }
             holder.binding.ibDelete.setOnClickListener {
