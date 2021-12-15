@@ -25,6 +25,16 @@ class SchoolAdapter @Inject constructor(
         onChangeListener = listener
     }
 
+    private var onShowMoreListener: ((SchoolEntity) -> Unit)? = null
+    fun setShowMoreListener(listener: (SchoolEntity) -> Unit) {
+        onShowMoreListener = listener
+    }
+
+    private var showMoreIcon: Int? = null
+    fun setShowMoreIcon(icon: Int) {
+        showMoreIcon = icon
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SchoolViewHolder {
         return SchoolViewHolder(
             binding = ListItemBinding.inflate(
@@ -42,6 +52,14 @@ class SchoolAdapter @Inject constructor(
         }
         holder.binding.ibChange.setOnClickListener {
             onChangeListener?.invoke(getItem(holder.adapterPosition))
+        }
+        holder.binding.ibShowMore.apply {
+            showMoreIcon?.let {
+                setImageResource(it)
+            }
+            setOnClickListener {
+                onShowMoreListener?.invoke(getItem(holder.adapterPosition))
+            }
         }
     }
 }

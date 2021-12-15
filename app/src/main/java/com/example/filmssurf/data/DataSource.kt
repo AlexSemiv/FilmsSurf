@@ -60,9 +60,9 @@ interface DataSource {
     suspend fun deleteAllSubjects()
 
     // student subject cross ref
-    suspend fun getStudentSubjectByStudentName(studentName: String): StudentSubjectCrossRefEntity?
+    fun getStudentSubjectByStudentName(studentName: String): Flow<List<StudentSubjectCrossRefEntity>>
 
-    suspend fun getStudentSubjectBySubjectName(subjectName: String): StudentSubjectCrossRefEntity?
+    fun getStudentSubjectBySubjectName(subjectName: String): Flow<List<StudentSubjectCrossRefEntity>>
 
     fun getAllStudentSubject(): Flow<List<StudentSubjectCrossRefEntity>>
 

@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.filmssurf.R
 import com.example.filmssurf.base.BaseFragment
 import com.example.filmssurf.databinding.ListLayoutBinding
 import com.example.filmssurf.ui.MainActivity
-import com.example.filmssurf.ui.fragments.adapters.school.SchoolAdapter
+import com.example.filmssurf.ui.fragments.adapters.student.StudentAdapter
 import com.example.filmssurf.ui.fragments.adapters.subject.SubjectAdapter
 import com.example.filmssurf.viewmodel.TablesViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +27,9 @@ class SubjectsFragment: BaseFragment<ListLayoutBinding>() {
     @Inject
     lateinit var subjectAdapter: SubjectAdapter
 
+    @Inject
+    lateinit var studentsAdapter: StudentAdapter
+
     private var viewModel: TablesViewModel? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,9 +39,24 @@ class SubjectsFragment: BaseFragment<ListLayoutBinding>() {
 
         binding.rvFilms.apply {
             adapter = subjectAdapter.apply {
+                setShowMoreIcon(R.drawable.ic_student)
                 setDeleteListener {
-                    Log.d("DEBUG_TAG", "delete: ${it._name}")
                     viewModel?.deleteSubject(it)
+                }
+                setShowMoreListener {
+                    val studentsRecyclerView = RecyclerView(requireContext()).apply {
+                        adapter = studentsAdapter.apply {
+                            setShouldShowActions(false)
+                        }
+                        layoutManager = LinearLayoutManager(requireContext())
+                    }
+                    ShowMoreDialog(it._name, studentsRecyclerView).show(childFragmentManager, null)
+
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        viewModel?.getStudentsBySubjectName(it._name)?.collect { students ->
+                            studentsAdapter.submitList(students)
+                        }
+                    }
                 }
             }
             layoutManager = LinearLayoutManager(

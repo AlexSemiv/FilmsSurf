@@ -2,6 +2,8 @@ package com.example.filmssurf.ui.fragments.adapters.student
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import com.example.courseworkdb.data.Student
 import com.example.filmssurf.base.BaseRecyclerAdapter
 import com.example.filmssurf.databinding.ListItemBinding
 import coursework.courseworkdb.SchoolEntity
@@ -24,6 +26,22 @@ class StudentAdapter @Inject constructor(
         onChangeListener = listener
     }
 
+    private var shouldShowActions: Boolean? = null
+    fun setShouldShowActions(shouldShow: Boolean = true) {
+        shouldShowActions = shouldShow
+    }
+
+    private var onShowMoreListener: ((StudentEntity) -> Unit)? = null
+    fun setShowMoreListener(listener: (StudentEntity) -> Unit) {
+        onShowMoreListener = listener
+    }
+
+    private var showMoreIcon: Int? = null
+    fun setShowMoreIcon(icon: Int) {
+        showMoreIcon = icon
+    }
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
         return StudentViewHolder(
             binding = ListItemBinding.inflate(
@@ -36,11 +54,27 @@ class StudentAdapter @Inject constructor(
 
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
-        holder.binding.ibDelete.setOnClickListener {
-            onDeleteListener?.invoke(getItem(holder.adapterPosition))
-        }
-        holder.binding.ibChange.setOnClickListener {
-            onChangeListener?.invoke(getItem(holder.adapterPosition))
+        if(shouldShowActions == false) {
+            holder.binding.apply {
+                ibChange.isVisible = false
+                ibShowMore.isVisible = false
+                ibDelete.isVisible = false
+            }
+        } else {
+            holder.binding.ibDelete.setOnClickListener {
+                onDeleteListener?.invoke(getItem(holder.adapterPosition))
+            }
+            holder.binding.ibChange.setOnClickListener {
+                onChangeListener?.invoke(getItem(holder.adapterPosition))
+            }
+            holder.binding.ibShowMore.apply {
+                showMoreIcon?.let {
+                    setImageResource(it)
+                }
+                setOnClickListener {
+                    onShowMoreListener?.invoke(getItem(holder.adapterPosition))
+                }
+            }
         }
     }
 }

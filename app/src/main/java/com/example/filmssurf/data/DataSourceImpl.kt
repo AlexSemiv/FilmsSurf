@@ -160,20 +160,16 @@ class DataSourceImpl(
     }
 
     // student subject
-    override suspend fun getStudentSubjectByStudentName(studentName: String): StudentSubjectCrossRefEntity? {
-        return withContext(Dispatchers.IO) {
-            studentSubjectQueries.getStudentSubjectByStudentName(
-                studentName = studentName
-            ).executeAsOneOrNull()
-        }
+    override fun getStudentSubjectByStudentName(studentName: String): Flow<List<StudentSubjectCrossRefEntity>> {
+        return studentSubjectQueries.getStudentSubjectByStudentName(
+            studentName = studentName
+        ).asFlow().mapToList()
     }
 
-    override suspend fun getStudentSubjectBySubjectName(subjectName: String): StudentSubjectCrossRefEntity? {
-        return withContext(Dispatchers.IO) {
-            studentSubjectQueries.getStudentSubjectBySubjectName(
-                subjectName = subjectName
-            ).executeAsOneOrNull()
-        }
+    override fun getStudentSubjectBySubjectName(subjectName: String): Flow<List<StudentSubjectCrossRefEntity>> {
+        return studentSubjectQueries.getStudentSubjectBySubjectName(
+            subjectName = subjectName
+        ).asFlow().mapToList()
     }
 
     override fun getAllStudentSubject(): Flow<List<StudentSubjectCrossRefEntity>> {

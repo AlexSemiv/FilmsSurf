@@ -22,6 +22,21 @@ class SubjectAdapter @Inject constructor(
         onDeleteListener = listener
     }
 
+    private var shouldShowActions: Boolean? = null
+    fun setShouldShowActions(shouldShow: Boolean = true) {
+        shouldShowActions = shouldShow
+    }
+
+    private var onShowMoreListener: ((SubjectEntity) -> Unit)? = null
+    fun setShowMoreListener(listener: (SubjectEntity) -> Unit) {
+        onShowMoreListener = listener
+    }
+
+    private var showMoreIcon: Int? = null
+    fun setShowMoreIcon(icon: Int) {
+        showMoreIcon = icon
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectViewHolder {
         return SubjectViewHolder(
             binding = ListItemBinding.inflate(
@@ -34,9 +49,27 @@ class SubjectAdapter @Inject constructor(
 
     override fun onBindViewHolder(holder: SubjectViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
-        holder.binding.ibDelete.setOnClickListener {
-            onDeleteListener?.invoke(SubjectEntity(getItem(holder.adapterPosition)))
-        }
         holder.binding.ibChange.isVisible = false
+        if(shouldShowActions == false) {
+            holder.binding.apply {
+                ibDelete.isVisible = false
+                ibShowMore.isVisible = false
+            }
+        } else {
+            holder.binding.ibDelete.setOnClickListener {
+                onDeleteListener?.invoke(SubjectEntity(getItem(holder.adapterPosition)))
+            }
+            holder.binding.ibShowMore.setOnClickListener {
+
+            }
+            holder.binding.ibShowMore.apply {
+                showMoreIcon?.let {
+                    setImageResource(it)
+                }
+                setOnClickListener {
+                    onShowMoreListener?.invoke(SubjectEntity(getItem(holder.adapterPosition)))
+                }
+            }
+        }
     }
 }

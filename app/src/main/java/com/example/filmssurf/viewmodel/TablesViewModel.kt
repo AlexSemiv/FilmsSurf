@@ -8,13 +8,16 @@ import coursework.courseworkdb.SchoolEntity
 import coursework.courseworkdb.StudentEntity
 import coursework.courseworkdb.SubjectEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TablesViewModel @Inject constructor(
     private val dataSource: DataSource
-): ViewModel() {
+) : ViewModel() {
 
     init {
         viewModelScope.launch {
@@ -77,4 +80,18 @@ class TablesViewModel @Inject constructor(
             dataSource.deleteSubjectByName(subject._name)
         }
     }
+
+    fun getStudentsBySchoolName(name: String) = dataSource.getStudentsBySchoolName(name)
+
+    fun getSubjectsByStudentName(name: String) = dataSource.getStudentSubjectByStudentName(name)
+        .map { it.map { stsub -> stsub._subject_name } }
+
+    fun getStudentsBySubjectName(name: String) =
+        dataSource.getStudentSubjectBySubjectName(name).map {
+            it.map {
+                viewModelScope.async {
+                    dataSource.getStudentByName(it._student_name)
+                }
+            }.awaitAll()
+        }
 }
