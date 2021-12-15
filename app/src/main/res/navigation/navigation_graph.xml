@@ -40,4 +40,15 @@
     <action
         android:id="@+id/globalActionToStudentChangeDialog"
         app:destination="@id/studentChangeDialog"/>
+    <dialog
+        android:id="@+id/addSubjectsDialog"
+        android:name="com.example.filmssurf.ui.fragments.adapters.student.AddSubjectsDialog"
+        android:label="AddSubjectsDialog" >
+        <argument
+            android:name="studentName"
+            app:argType="string"/>
+    </dialog>
+    <action
+        android:id="@+id/globalActionToAddSubjectsDialog"
+        app:destination="@id/addSubjectsDialog"/>
 </navigation>

@@ -8,6 +8,7 @@ import com.example.filmssurf.data.DataSource
 import coursework.courseworkdb.SchoolEntity
 import coursework.courseworkdb.StudentEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -62,6 +63,33 @@ class ChangeViewModel @Inject constructor(
         viewModelScope.launch {
             dataSource.insertStudent(
                 name, semester, schoolName
+            )
+        }
+    }
+
+    fun getAllSubjects() = dataSource.getAllSubjects()
+
+    fun getSubjectsByStudentName(name: String) = dataSource.getStudentSubjectByStudentName(name)
+        .map {
+            it.map { cross ->
+                cross._subject_name
+            }
+        }
+
+    fun deleteStudentSubject(studentName: String, subjectName: String) {
+        viewModelScope.launch {
+            dataSource.deleteStudentSubject(
+                studentName = studentName,
+                subjectName = subjectName
+            )
+        }
+    }
+
+    fun insertStudentSubject(studentName: String, subjectName: String) {
+        viewModelScope.launch {
+            dataSource.insertStudentSubject(
+                studentName = studentName,
+                subjectName = subjectName
             )
         }
     }

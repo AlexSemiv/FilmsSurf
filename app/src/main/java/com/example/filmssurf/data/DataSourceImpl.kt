@@ -190,4 +190,13 @@ class DataSourceImpl(
             studentSubjectQueries.deleteAllStudentSubject()
         }
     }
+
+    override suspend fun deleteStudentSubject(studentName: String, subjectName: String) {
+        withContext(Dispatchers.IO) {
+            studentSubjectQueries.deleteStudentSubject(
+                studentName = studentName,
+                subjectName = subjectName
+            )
+        }
+    }
 }

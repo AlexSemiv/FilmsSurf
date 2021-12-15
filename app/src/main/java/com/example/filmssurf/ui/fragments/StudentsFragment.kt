@@ -40,6 +40,14 @@ class StudentsFragment: BaseFragment<ListLayoutBinding>() {
         binding.rvFilms.apply {
             adapter = studentAdapter.apply {
                 setShowMoreIcon(R.drawable.ic_subject)
+                setAddSubjectsListener {
+                    findNavController().navigate(
+                        R.id.globalActionToAddSubjectsDialog,
+                        Bundle().apply {
+                            putString("studentName", it._name)
+                        }
+                    )
+                }
                 setDeleteListener {
                     viewModel?.deleteStudent(it)
                 }

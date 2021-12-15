@@ -3,6 +3,7 @@ package com.example.filmssurf.ui.fragments.adapters.subject
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import com.example.filmssurf.R
 import com.example.filmssurf.base.BaseRecyclerAdapter
 import com.example.filmssurf.databinding.ListItemBinding
 import com.example.filmssurf.ui.fragments.adapters.student.StudentViewHolder
@@ -16,6 +17,11 @@ import javax.inject.Inject
 class SubjectAdapter @Inject constructor(
     callback: SubjectDiffUtil
 ) : BaseRecyclerAdapter<String, ListItemBinding, SubjectViewHolder> (callback) {
+
+    private var onAddSubjectsListener: ((SubjectEntity) -> Unit)? = null
+    fun setAddSubjectsListener(listener: (SubjectEntity) -> Unit) {
+        onAddSubjectsListener = listener
+    }
 
     private var onDeleteListener: ((SubjectEntity) -> Unit)? = null
     fun setDeleteListener(listener: (SubjectEntity) -> Unit) {
@@ -56,6 +62,13 @@ class SubjectAdapter @Inject constructor(
                 ibShowMore.isVisible = false
             }
         } else {
+            holder.binding.ibAdd.apply {
+                setImageResource(R.drawable.ic_add_student)
+                isVisible = true
+                setOnClickListener {
+                    onAddSubjectsListener?.invoke(SubjectEntity(getItem(holder.adapterPosition)))
+                }
+            }
             holder.binding.ibDelete.setOnClickListener {
                 onDeleteListener?.invoke(SubjectEntity(getItem(holder.adapterPosition)))
             }

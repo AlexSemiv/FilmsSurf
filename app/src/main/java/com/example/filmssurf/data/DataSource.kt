@@ -72,4 +72,6 @@ interface DataSource {
     )
 
     suspend fun deleteAllStudentSubject()
+
+    suspend fun deleteStudentSubject(studentName: String, subjectName: String)
 }

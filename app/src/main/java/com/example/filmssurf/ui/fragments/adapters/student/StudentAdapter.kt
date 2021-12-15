@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.example.courseworkdb.data.Student
+import com.example.filmssurf.R
 import com.example.filmssurf.base.BaseRecyclerAdapter
 import com.example.filmssurf.databinding.ListItemBinding
 import coursework.courseworkdb.SchoolEntity
@@ -15,6 +16,11 @@ import javax.inject.Inject
 class StudentAdapter @Inject constructor(
     callback: StudentDiffUtil
 ) : BaseRecyclerAdapter<StudentEntity, ListItemBinding, StudentViewHolder> (callback) {
+
+    private var onAddSubjectsListener: ((StudentEntity) -> Unit)? = null
+    fun setAddSubjectsListener(listener: (StudentEntity) -> Unit) {
+        onAddSubjectsListener = listener
+    }
 
     private var onDeleteListener: ((StudentEntity) -> Unit)? = null
     fun setDeleteListener(listener: (StudentEntity) -> Unit) {
@@ -61,6 +67,13 @@ class StudentAdapter @Inject constructor(
                 ibDelete.isVisible = false
             }
         } else {
+            holder.binding.ibAdd.apply {
+                setImageResource(R.drawable.ic_add_subject)
+                isVisible = true
+                setOnClickListener {
+                    onAddSubjectsListener?.invoke(getItem(holder.adapterPosition))
+                }
+            }
             holder.binding.ibDelete.setOnClickListener {
                 onDeleteListener?.invoke(getItem(holder.adapterPosition))
             }

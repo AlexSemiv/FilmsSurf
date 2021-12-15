@@ -1,6 +1,7 @@
 CREATE TABLE studentSubjectCrossRefEntity (
     _student_name TEXT NOT NULL,
     _subject_name TEXT NOT NULL,
+    PRIMARY KEY (_student_name, _subject_name),
     FOREIGN KEY (_student_name)
     REFERENCES studentEntity(_name)
     ON DELETE CASCADE,
@@ -30,6 +31,10 @@ insertStudentSubject:
 INSERT OR REPLACE
 INTO studentSubjectCrossRefEntity
 VALUES (?, ?);
+
+deleteStudentSubject:
+DELETE FROM studentSubjectCrossRefEntity
+WHERE _student_name = :studentName AND _subject_name = :subjectName;
 
 deleteAllStudentSubject:
 DELETE FROM studentSubjectCrossRefEntity;
