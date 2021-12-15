@@ -2,9 +2,6 @@ package com.example.filmssurf.ui.fragments.adapters.subject
 
 import com.example.filmssurf.base.BaseViewHolder
 import com.example.filmssurf.databinding.ListItemBinding
-import coursework.courseworkdb.SchoolEntity
-import coursework.courseworkdb.StudentEntity
-import coursework.courseworkdb.SubjectEntity
 
 class SubjectViewHolder(
     val binding: ListItemBinding
@@ -12,7 +9,8 @@ class SubjectViewHolder(
 
     override fun bind() {
         item?.let { subject ->
-            binding.tvItem.text = subject
+            val text = "\n$subject"
+            binding.tvItem.text = text
         }
     }
 }

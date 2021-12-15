@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:hint="Enter new address.."
         android:maxLines="1"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="@+id/etSpecialization"
         app:layout_constraintStart_toEndOf="@+id/textView6" />
@@ -49,6 +50,7 @@
         android:layout_marginEnd="8dp"
         android:hint="Enter new spec.."
         android:maxLines="1"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

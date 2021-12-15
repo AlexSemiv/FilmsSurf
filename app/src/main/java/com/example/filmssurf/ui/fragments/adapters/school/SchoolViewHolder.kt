@@ -10,7 +10,10 @@ class SchoolViewHolder(
 
     override fun bind() {
         item?.let { school ->
-            binding.tvItem.text = school.toString()
+            val text = "\n${school._name}\n" +
+                    "specialization: ${school._specialization}\n" +
+                    "address: ${school._address}"
+            binding.tvItem.text = text
         }
     }
 }

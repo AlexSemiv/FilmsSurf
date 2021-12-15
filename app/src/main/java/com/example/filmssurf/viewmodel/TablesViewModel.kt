@@ -84,7 +84,11 @@ class TablesViewModel @Inject constructor(
     fun getStudentsBySchoolName(name: String) = dataSource.getStudentsBySchoolName(name)
 
     fun getSubjectsByStudentName(name: String) = dataSource.getStudentSubjectByStudentName(name)
-        .map { it.map { stsub -> stsub._subject_name } }
+        .map {
+            it.map { cross ->
+                cross._subject_name
+            }
+        }
 
     fun getStudentsBySubjectName(name: String) =
         dataSource.getStudentSubjectBySubjectName(name).map {

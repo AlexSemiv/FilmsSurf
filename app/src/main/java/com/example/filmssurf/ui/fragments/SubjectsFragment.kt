@@ -49,8 +49,14 @@ class SubjectsFragment: BaseFragment<ListLayoutBinding>() {
                             setShouldShowActions(false)
                         }
                         layoutManager = LinearLayoutManager(requireContext())
+                        addItemDecoration(
+                            DividerItemDecoration(
+                                requireContext(),
+                                DividerItemDecoration.VERTICAL
+                            )
+                        )
                     }
-                    ShowMoreDialog(it._name, studentsRecyclerView).show(childFragmentManager, null)
+                    ShowMoreDialog(it._name, R.drawable.ic_student, studentsRecyclerView).show(childFragmentManager, null)
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         viewModel?.getStudentsBySubjectName(it._name)?.collect { students ->

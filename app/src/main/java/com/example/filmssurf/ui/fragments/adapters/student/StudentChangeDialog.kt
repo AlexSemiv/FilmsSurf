@@ -62,6 +62,7 @@ class StudentChangeDialog : DialogFragment() {
                 }
             }
             .setNegativeButton("Cancel") { _, _ -> }
+            .setIcon(R.drawable.ic_student)
             .create()
     }
 

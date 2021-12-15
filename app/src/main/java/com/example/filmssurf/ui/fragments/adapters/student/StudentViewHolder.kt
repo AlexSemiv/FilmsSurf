@@ -7,11 +7,14 @@ import coursework.courseworkdb.StudentEntity
 
 class StudentViewHolder(
     val binding: ListItemBinding
-) : BaseViewHolder<StudentEntity, ListItemBinding> (binding) {
+) : BaseViewHolder<StudentEntity, ListItemBinding>(binding) {
 
     override fun bind() {
         item?.let { student ->
-            binding.tvItem.text = student.toString()
+            val text = "\n${student._name}\n" +
+                    "semester: ${student._semester}\n" +
+                    "school: ${student._school_name}"
+            binding.tvItem.text = text
         }
     }
 }
