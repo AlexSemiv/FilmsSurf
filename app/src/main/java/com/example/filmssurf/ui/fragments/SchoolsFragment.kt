@@ -17,6 +17,7 @@ import com.example.filmssurf.base.BaseFragment
 import com.example.filmssurf.databinding.ListLayoutBinding
 import com.example.filmssurf.other.SchoolSortType
 import com.example.filmssurf.ui.MainActivity
+import com.example.filmssurf.ui.fragments.adapters.school.NewSchoolDialog
 import com.example.filmssurf.ui.fragments.adapters.school.SchoolAdapter
 import com.example.filmssurf.ui.fragments.adapters.student.StudentAdapter
 import com.example.filmssurf.viewmodel.TablesViewModel
@@ -91,6 +92,10 @@ class SchoolsFragment : BaseFragment<ListLayoutBinding>() {
                     return false
                 }
             })
+        }
+
+        binding.ibNewItem.setOnClickListener {
+            NewSchoolDialog().show(childFragmentManager, null)
         }
 
         binding.rvFilms.apply {

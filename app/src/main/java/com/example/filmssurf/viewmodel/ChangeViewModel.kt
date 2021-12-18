@@ -23,6 +23,32 @@ class ChangeViewModel @Inject constructor(
     private val _schoolLiveData = MutableLiveData<SchoolEntity?>()
     val schoolLiveData: LiveData<SchoolEntity?> = _schoolLiveData
 
+    fun createSchool(name: String, address: String, specialization: String) {
+        viewModelScope.launch {
+            dataSource.insertSchool(
+                name = name,
+                address = address,
+                specialization = specialization
+            )
+        }
+    }
+
+    fun createStudent(name: String, semester: Long, schoolName: String) {
+        viewModelScope.launch {
+            dataSource.insertStudent(
+                name = name,
+                semester = semester,
+                schoolName = schoolName
+            )
+        }
+    }
+
+    fun createSubject(name: String) {
+        viewModelScope.launch {
+            dataSource.insertSubject(name)
+        }
+    }
+
     fun getSchoolByName(name: String) {
         viewModelScope.launch {
             val school = dataSource.getSchoolByName(name)
@@ -98,6 +124,8 @@ class ChangeViewModel @Inject constructor(
     }
 
     fun getAllStudents() = dataSource.getAllStudentsSortedByName()
+
+    fun getAllSchools() = dataSource.getAllSchoolsOrderByName()
 
     fun getStudentsBySubjectName(name: String) = dataSource.getStudentSubjectBySubjectName(name)
 }

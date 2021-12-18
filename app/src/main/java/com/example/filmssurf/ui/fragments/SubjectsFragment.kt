@@ -16,6 +16,7 @@ import com.example.filmssurf.base.BaseFragment
 import com.example.filmssurf.databinding.ListLayoutBinding
 import com.example.filmssurf.ui.MainActivity
 import com.example.filmssurf.ui.fragments.adapters.student.StudentAdapter
+import com.example.filmssurf.ui.fragments.adapters.subject.NewSubjectDialog
 import com.example.filmssurf.ui.fragments.adapters.subject.SubjectAdapter
 import com.example.filmssurf.viewmodel.TablesViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,6 +60,10 @@ class SubjectsFragment: BaseFragment<ListLayoutBinding>() {
                     return false
                 }
             })
+        }
+
+        binding.ibNewItem.setOnClickListener {
+            NewSubjectDialog().show(childFragmentManager, null)
         }
 
         binding.rvFilms.apply {

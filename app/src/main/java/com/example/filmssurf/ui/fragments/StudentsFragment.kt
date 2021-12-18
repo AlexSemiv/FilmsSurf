@@ -18,6 +18,7 @@ import com.example.filmssurf.databinding.ListLayoutBinding
 import com.example.filmssurf.other.SchoolSortType
 import com.example.filmssurf.other.StudentSortType
 import com.example.filmssurf.ui.MainActivity
+import com.example.filmssurf.ui.fragments.adapters.student.NewStudentDialog
 import com.example.filmssurf.ui.fragments.adapters.student.StudentAdapter
 import com.example.filmssurf.ui.fragments.adapters.subject.SubjectAdapter
 import com.example.filmssurf.viewmodel.TablesViewModel
@@ -76,6 +77,10 @@ class StudentsFragment: BaseFragment<ListLayoutBinding>() {
                 }
 
             }
+        }
+
+        binding.ibNewItem.setOnClickListener {
+            NewStudentDialog().show(childFragmentManager, null)
         }
 
         binding.svFilms.apply {

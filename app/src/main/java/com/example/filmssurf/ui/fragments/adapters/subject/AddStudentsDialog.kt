@@ -70,6 +70,5 @@ class AddStudentsDialog: DialogFragment() {
             .setPositiveButton("Close") { _, _ -> }
             .setIcon(R.drawable.ic_add_student)
             .create()
-
     }
 }
