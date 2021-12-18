@@ -26,10 +26,28 @@ SELECT _name
 FROM schoolEntity
 ORDER BY _name ASC;
 
-getAllSchools:
+getAllSchoolsOrderByName:
 SELECT *
 FROM schoolEntity
 ORDER BY _name ASC;
+
+
+getAllSchoolsOrderByAddress:
+SELECT *
+FROM schoolEntity
+ORDER BY _address ASC;
+
+getAllSchoolsOrderBySpecialization:
+SELECT *
+FROM schoolEntity
+ORDER BY _specialization ASC;
+
+searchSchools:
+SELECT * FROM schoolEntity
+WHERE
+_name LIKE '%' || :query || '%'
+OR _address LIKE  '%' || :query || '%'
+OR _specialization LIKE '%' || :query || '%';
 
 insertSchool:
 INSERT OR REPLACE

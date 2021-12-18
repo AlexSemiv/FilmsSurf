@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -37,6 +38,9 @@ class SubjectsFragment: BaseFragment<ListLayoutBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = (activity as MainActivity).viewModel
+
+        binding.tvSortType.visibility = View.GONE
+        binding.spSort.visibility = View.GONE
 
         binding.rvFilms.apply {
             adapter = subjectAdapter.apply {

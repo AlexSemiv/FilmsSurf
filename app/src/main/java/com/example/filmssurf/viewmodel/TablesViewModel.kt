@@ -1,16 +1,22 @@
 package com.example.filmssurf.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.courseworkdb.data.CourseworkData
+import com.example.courseworkdb.data.Student
 import com.example.filmssurf.data.DataSource
+import com.example.filmssurf.other.SchoolSortType
+import com.example.filmssurf.other.StudentSortType
 import coursework.courseworkdb.SchoolEntity
 import coursework.courseworkdb.StudentEntity
 import coursework.courseworkdb.SubjectEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,6 +24,24 @@ import javax.inject.Inject
 class TablesViewModel @Inject constructor(
     private val dataSource: DataSource
 ) : ViewModel() {
+
+    private val _schoolSortFlow = MutableStateFlow(SchoolSortType.NAME)
+    val schoolSortType: LiveData<SchoolSortType> = _schoolSortFlow.asLiveData()
+    suspend fun setSchoolSortType(type: SchoolSortType) {
+        _schoolSortFlow.emit(type)
+    }
+
+    private val _schoolSearchFlow = MutableStateFlow("")
+    val schoolSearchQuery: LiveData<String> = _schoolSearchFlow.asLiveData()
+    suspend fun setSchoolSearchQuery(query: String) {
+        _schoolSearchFlow.emit(query)
+    }
+
+    private val _studentSortFlow = MutableStateFlow(StudentSortType.NAME)
+    val studentSortType: LiveData<StudentSortType> = _studentSortFlow.asLiveData()
+    suspend fun setStudentSortType(type: StudentSortType) {
+        _studentSortFlow.emit(type)
+    }
 
     init {
         viewModelScope.launch {
@@ -57,15 +81,41 @@ class TablesViewModel @Inject constructor(
         }
     }
 
-    fun getAllSchools() = dataSource.getAllSchools()
+    val schools = _schoolSortFlow
+        .flatMapLatest {
+            when(it) {
+                SchoolSortType.NAME -> {
+                    dataSource.getAllSchoolsOrderByName()
+                }
+                SchoolSortType.ADDRESS -> {
+                    dataSource.getAllSchoolsOrderByAddress()
+                }
+                SchoolSortType.SPECIALIZATION -> {
+                    dataSource.getAllSchoolsOrderBySpecialization()
+                }
+            }
+        }
+
+    val students = _studentSortFlow
+        .flatMapLatest {
+            when(it) {
+                StudentSortType.NAME -> {
+                    dataSource.getAllStudentsSortedByName()
+                }
+                StudentSortType.SEMESTER -> {
+                    dataSource.getAllStudentsSortedBySemester()
+                }
+                StudentSortType.SCHOOL -> {
+                    dataSource.getAllStudentsSortedBySchool()
+                }
+            }
+        }
 
     fun deleteSchool(school: SchoolEntity) {
         viewModelScope.launch {
             dataSource.deleteSchoolByName(school._name)
         }
     }
-
-    fun getAllStudents() = dataSource.getAllStudents()
 
     fun deleteStudent(student: StudentEntity) {
         viewModelScope.launch {

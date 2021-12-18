@@ -41,8 +41,16 @@ class DataSourceImpl(
         ).asFlow().mapToList()
     }
 
-    override fun getAllSchools(): Flow<List<SchoolEntity>> {
-        return schoolQueries.getAllSchools().asFlow().mapToList()
+    override fun getAllSchoolsOrderByName(): Flow<List<SchoolEntity>> {
+        return schoolQueries.getAllSchoolsOrderByName().asFlow().mapToList()
+    }
+
+    override fun getAllSchoolsOrderByAddress(): Flow<List<SchoolEntity>> {
+        return schoolQueries.getAllSchoolsOrderByAddress().asFlow().mapToList()
+    }
+
+    override fun getAllSchoolsOrderBySpecialization(): Flow<List<SchoolEntity>> {
+        return schoolQueries.getAllSchoolsOrderBySpecialization().asFlow().mapToList()
     }
 
     override suspend fun getAllSchoolNames(): List<String> {
@@ -75,6 +83,10 @@ class DataSourceImpl(
         }
     }
 
+    override fun searchSchools(query: String): Flow<List<SchoolEntity>> {
+        return schoolQueries.searchSchools(query).asFlow().mapToList()
+    }
+
     // student
     override suspend fun getStudentByName(name: String): StudentEntity? {
         return withContext(Dispatchers.IO) {
@@ -96,8 +108,16 @@ class DataSourceImpl(
         ).asFlow().mapToList()
     }
 
-    override fun getAllStudents(): Flow<List<StudentEntity>> {
-        return studentQueries.getAllStudents().asFlow().mapToList()
+    override fun getAllStudentsSortedByName(): Flow<List<StudentEntity>> {
+        return studentQueries.getAllStudentsSortedByName().asFlow().mapToList()
+    }
+
+    override fun getAllStudentsSortedBySchool(): Flow<List<StudentEntity>> {
+        return studentQueries.getAllStudentsSortedBySchool().asFlow().mapToList()
+    }
+
+    override fun getAllStudentsSortedBySemester(): Flow<List<StudentEntity>> {
+        return studentQueries.getAllStudentsSortedBySemester().asFlow().mapToList()
     }
 
     override suspend fun insertStudent(name: String, semester: Long, schoolName: String) {
@@ -122,6 +142,10 @@ class DataSourceImpl(
         withContext(Dispatchers.IO) {
             studentQueries.deleteAllStudents()
         }
+    }
+
+    override fun searchStudents(query: String): Flow<List<StudentEntity>> {
+        return studentQueries.searchStudents(query).asFlow().mapToList()
     }
 
     // subject
@@ -157,6 +181,10 @@ class DataSourceImpl(
         withContext(Dispatchers.IO) {
             subjectQueries.deleteAllSubjects()
         }
+    }
+
+    override fun searchSubjects(query: String): Flow<List<String>> {
+        return subjectQueries.searchSubjects(query).asFlow().mapToList()
     }
 
     // student subject

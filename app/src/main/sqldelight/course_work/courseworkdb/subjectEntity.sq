@@ -17,6 +17,11 @@ INSERT OR REPLACE
 INTO subjectEntity
 VALUES (?);
 
+searchSubjects:
+SELECT * FROM subjectEntity
+WHERE
+_name LIKE '%' || :query || '%';
+
 deleteSubjectByName:
 DELETE FROM subjectEntity
 WHERE _name = :name;

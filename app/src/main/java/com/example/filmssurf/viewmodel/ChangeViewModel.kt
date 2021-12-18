@@ -97,7 +97,7 @@ class ChangeViewModel @Inject constructor(
         }
     }
 
-    fun getAllStudents() = dataSource.getAllStudents()
+    fun getAllStudents() = dataSource.getAllStudentsSortedByName()
 
     fun getStudentsBySubjectName(name: String) = dataSource.getStudentSubjectBySubjectName(name)
 }

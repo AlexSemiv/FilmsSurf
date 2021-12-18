@@ -15,7 +15,11 @@ interface DataSource {
 
     fun getSchoolsByAddress(address: String): Flow<List<SchoolEntity>>
 
-    fun getAllSchools(): Flow<List<SchoolEntity>>
+    fun getAllSchoolsOrderByName(): Flow<List<SchoolEntity>>
+
+    fun getAllSchoolsOrderByAddress(): Flow<List<SchoolEntity>>
+
+    fun getAllSchoolsOrderBySpecialization(): Flow<List<SchoolEntity>>
 
     suspend fun insertSchool(
         name: String,
@@ -29,6 +33,8 @@ interface DataSource {
 
     suspend fun getAllSchoolNames() : List<String>
 
+    fun searchSchools(query: String): Flow<List<SchoolEntity>>
+
     //student
     suspend fun getStudentByName(name: String): StudentEntity?
 
@@ -36,7 +42,11 @@ interface DataSource {
 
     fun getStudentsBySchoolName(name: String): Flow<List<StudentEntity>>
 
-    fun getAllStudents(): Flow<List<StudentEntity>>
+    fun getAllStudentsSortedByName(): Flow<List<StudentEntity>>
+
+    fun getAllStudentsSortedBySemester(): Flow<List<StudentEntity>>
+
+    fun getAllStudentsSortedBySchool(): Flow<List<StudentEntity>>
 
     suspend fun insertStudent(
         name: String,
@@ -48,6 +58,8 @@ interface DataSource {
 
     suspend fun deleteAllStudents()
 
+    fun searchStudents(query: String): Flow<List<StudentEntity>>
+
     //subject
     suspend fun getSubjectByName(name: String): String?
 
@@ -58,6 +70,8 @@ interface DataSource {
     suspend fun deleteSubjectByName(name: String)
 
     suspend fun deleteAllSubjects()
+
+    fun searchSubjects(query: String): Flow<List<String>>
 
     // student subject cross ref
     fun getStudentSubjectByStudentName(studentName: String): Flow<List<StudentSubjectCrossRefEntity>>

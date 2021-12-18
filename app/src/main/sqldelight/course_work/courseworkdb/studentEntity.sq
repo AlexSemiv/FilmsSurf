@@ -24,10 +24,27 @@ FROM studentEntity
 WHERE _school_name = :schoolName
 ORDER BY _name ASC;
 
-getAllStudents:
+getAllStudentsSortedByName:
 SELECT *
 FROM studentEntity
 ORDER BY _name ASC;
+
+getAllStudentsSortedBySemester:
+SELECT *
+FROM studentEntity
+ORDER BY _semester ASC;
+
+getAllStudentsSortedBySchool:
+SELECT *
+FROM studentEntity
+ORDER BY _school_name ASC;
+
+searchStudents:
+SELECT * FROM studentEntity
+WHERE
+_name LIKE '%' || :query || '%'
+OR _semester LIKE  '%' || :query || '%'
+OR _school_name LIKE '%' || :query || '%';
 
 insertStudent:
 INSERT OR REPLACE

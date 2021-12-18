@@ -29,20 +29,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/pbHorizontalLoading"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:indeterminate="true"
-        android:indeterminateBehavior="cycle"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/svFilms" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFilms"
         android:layout_width="0dp"
@@ -50,16 +36,24 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pbHorizontalLoading" />
+        app:layout_constraintTop_toBottomOf="@+id/spSort" />
 
-    <ProgressBar
-        android:id="@+id/pbCircleLoading"
+    <Spinner
+        android:id="@+id/spSort"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/rvFilms" />
+        app:layout_constraintTop_toBottomOf="@+id/svFilms" />
+
+    <TextView
+        android:id="@+id/tvSortType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:text="sort by"
+        app:layout_constraintBottom_toBottomOf="@+id/spSort"
+        app:layout_constraintEnd_toStartOf="@+id/spSort"
+        app:layout_constraintTop_toTopOf="@+id/spSort" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
