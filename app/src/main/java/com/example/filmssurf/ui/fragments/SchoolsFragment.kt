@@ -79,17 +79,17 @@ class SchoolsFragment : BaseFragment<ListLayoutBinding>() {
 
         binding.svFilms.apply {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
+                override fun onQueryTextSubmit(query: String?): Boolean = false
+
+                override fun onQueryTextChange(newText: String?): Boolean {
                     searchJob?.cancel()
                     searchJob = lifecycleScope.launch {
-                        query?.let { query ->
+                        newText?.let { query ->
                             viewModel?.setSchoolSearchQuery(query)
                         }
                     }
                     return false
                 }
-
-                override fun onQueryTextChange(newText: String?): Boolean = false
             })
         }
 

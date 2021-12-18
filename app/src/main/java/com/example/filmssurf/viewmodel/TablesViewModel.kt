@@ -43,6 +43,18 @@ class TablesViewModel @Inject constructor(
         _studentSortFlow.emit(type)
     }
 
+    private val _studentSearchFlow = MutableStateFlow("")
+    val studentSearchQuery: LiveData<String> = _studentSearchFlow.asLiveData()
+    suspend fun setStudentSearchQuery(query: String) {
+        _studentSearchFlow.emit(query)
+    }
+
+    private val _subjectSearchFlow = MutableStateFlow("")
+    val subjectSearchQuery: LiveData<String> = _subjectSearchFlow.asLiveData()
+    suspend fun setSubjectSearchQuery(query: String) {
+        _subjectSearchFlow.emit(query)
+    }
+
     init {
         viewModelScope.launch {
             dataSource.deleteAllSchools()
@@ -81,7 +93,7 @@ class TablesViewModel @Inject constructor(
         }
     }
 
-    val schools = _schoolSortFlow
+    private val sortedSchools = _schoolSortFlow
         .flatMapLatest {
             when(it) {
                 SchoolSortType.NAME -> {
@@ -96,7 +108,16 @@ class TablesViewModel @Inject constructor(
             }
         }
 
-    val students = _studentSortFlow
+    private val searchedSchools = _schoolSearchFlow
+        .flatMapLatest {
+            dataSource.searchSchools(it)
+        }
+
+    val schools = sortedSchools.combine(searchedSchools) { sorted, searched ->
+        sorted.intersect(searched.toSet()).toList()
+    }
+
+    private val sortedStudents = _studentSortFlow
         .flatMapLatest {
             when(it) {
                 StudentSortType.NAME -> {
@@ -111,6 +132,15 @@ class TablesViewModel @Inject constructor(
             }
         }
 
+    private val searchedStudents = _studentSearchFlow
+        .flatMapLatest {
+            dataSource.searchStudents(it)
+        }
+
+    val students = sortedStudents.combine(searchedStudents) { sorted, searched ->
+        sorted.intersect(searched.toSet()).toList()
+    }
+
     fun deleteSchool(school: SchoolEntity) {
         viewModelScope.launch {
             dataSource.deleteSchoolByName(school._name)
@@ -123,7 +153,10 @@ class TablesViewModel @Inject constructor(
         }
     }
 
-    fun getAllSubjects() = dataSource.getAllSubjects()
+    val subjects = _subjectSearchFlow
+        .flatMapLatest {
+            dataSource.searchSubjects(it)
+        }
 
     fun deleteSubject(subject: SubjectEntity) {
         viewModelScope.launch {

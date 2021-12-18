@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -77,7 +78,7 @@ class StudentsFragment: BaseFragment<ListLayoutBinding>() {
             }
         }
 
-        /*binding.svFilms.apply {
+        binding.svFilms.apply {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean = false
 
@@ -85,13 +86,13 @@ class StudentsFragment: BaseFragment<ListLayoutBinding>() {
                     searchJob?.cancel()
                     searchJob = lifecycleScope.launch {
                         newText?.let { query ->
-                            viewModel?.searchSchool(query)
+                            viewModel?.setStudentSearchQuery(query)
                         }
                     }
-                    return true
+                    return false
                 }
             })
-        }*/
+        }
 
         binding.rvFilms.apply {
             adapter = studentAdapter.apply {
@@ -154,6 +155,10 @@ class StudentsFragment: BaseFragment<ListLayoutBinding>() {
             viewModel?.students?.collect {
                 studentAdapter.submitList(it)
             }
+        }
+
+        viewModel?.studentSearchQuery?.observe(viewLifecycleOwner) {
+            binding.svFilms.setQuery(it, false)
         }
 
         viewModel?.studentSortType?.observe(viewLifecycleOwner) {

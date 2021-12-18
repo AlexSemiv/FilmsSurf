@@ -5,7 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -19,6 +19,7 @@ import com.example.filmssurf.ui.fragments.adapters.student.StudentAdapter
 import com.example.filmssurf.ui.fragments.adapters.subject.SubjectAdapter
 import com.example.filmssurf.viewmodel.TablesViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,6 +35,8 @@ class SubjectsFragment: BaseFragment<ListLayoutBinding>() {
 
     private var viewModel: TablesViewModel? = null
 
+    private var searchJob: Job? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -41,6 +44,22 @@ class SubjectsFragment: BaseFragment<ListLayoutBinding>() {
 
         binding.tvSortType.visibility = View.GONE
         binding.spSort.visibility = View.GONE
+
+        binding.svFilms.apply {
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean = false
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    searchJob?.cancel()
+                    searchJob = lifecycleScope.launch {
+                        newText?.let { query ->
+                            viewModel?.setSubjectSearchQuery(query)
+                        }
+                    }
+                    return false
+                }
+            })
+        }
 
         binding.rvFilms.apply {
             adapter = subjectAdapter.apply {
@@ -92,10 +111,13 @@ class SubjectsFragment: BaseFragment<ListLayoutBinding>() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel?.getAllSubjects()?.collect {
-                Log.d("DEBUG_TAG", "subjects: $it")
+            viewModel?.subjects?.collect {
                 subjectAdapter.submitList(it)
             }
+        }
+
+        viewModel?.subjectSearchQuery?.observe(viewLifecycleOwner) {
+            binding.svFilms.setQuery(it, false)
         }
     }
 
