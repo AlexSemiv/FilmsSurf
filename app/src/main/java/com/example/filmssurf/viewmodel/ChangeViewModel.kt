@@ -62,8 +62,10 @@ class ChangeViewModel @Inject constructor(
         address: String
     ) {
         viewModelScope.launch {
-            dataSource.insertSchool(
-                name, specialization, address
+            dataSource.updateSchool(
+                name = name,
+                specialization = specialization,
+                address = address
             )
         }
     }
@@ -90,8 +92,10 @@ class ChangeViewModel @Inject constructor(
         schoolName: String
     ) {
         viewModelScope.launch {
-            dataSource.insertStudent(
-                name, semester, schoolName
+            dataSource.updateStudent(
+                name = name,
+                semester = semester,
+                schoolName = schoolName
             )
         }
     }

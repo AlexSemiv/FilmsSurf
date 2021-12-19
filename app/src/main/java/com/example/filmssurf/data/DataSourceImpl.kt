@@ -69,6 +69,16 @@ class DataSourceImpl(
         }
     }
 
+    override suspend fun updateSchool(name: String, specialization: String, address: String) {
+        withContext(Dispatchers.IO) {
+            schoolQueries.updateSchoolByName(
+                name = name,
+                specialization = specialization,
+                address = address
+            )
+        }
+    }
+
     override suspend fun deleteSchoolByName(name: String) {
         withContext(Dispatchers.IO) {
             schoolQueries.deleteSchoolByName(
@@ -126,6 +136,16 @@ class DataSourceImpl(
                 _name = name,
                 _semester = semester,
                 _school_name = schoolName
+            )
+        }
+    }
+
+    override suspend fun updateStudent(name: String, semester: Long, schoolName: String) {
+        withContext(Dispatchers.IO) {
+            studentQueries.updateStudentByName(
+                name = name,
+                semester = semester,
+                schoolName = schoolName
             )
         }
     }

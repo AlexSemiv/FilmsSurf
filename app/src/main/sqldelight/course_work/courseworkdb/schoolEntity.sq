@@ -54,6 +54,11 @@ INSERT OR REPLACE
 INTO schoolEntity
 VALUES (?, ?, ?);
 
+updateSchoolByName:
+UPDATE schoolEntity
+SET _address = :address, _specialization = :specialization
+WHERE _name = :name;
+
 deleteSchoolByName:
 DELETE FROM schoolEntity
 WHERE _name = :name;

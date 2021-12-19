@@ -51,6 +51,11 @@ INSERT OR REPLACE
 INTO studentEntity
 VALUES (?, ?, ?);
 
+updateStudentByName:
+UPDATE studentEntity
+SET _semester = :semester, _school_name = :schoolName
+WHERE _name = :name;
+
 deleteStudentByName:
 DELETE FROM studentEntity
 WHERE _name = :name;

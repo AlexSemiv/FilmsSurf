@@ -27,6 +27,12 @@ interface DataSource {
         address: String
     )
 
+    suspend fun updateSchool(
+        name: String,
+        specialization: String,
+        address: String
+    )
+
     suspend fun deleteSchoolByName(name: String)
 
     suspend fun deleteAllSchools()
@@ -49,6 +55,12 @@ interface DataSource {
     fun getAllStudentsSortedBySchool(): Flow<List<StudentEntity>>
 
     suspend fun insertStudent(
+        name: String,
+        semester: Long,
+        schoolName: String
+    )
+
+    suspend fun updateStudent(
         name: String,
         semester: Long,
         schoolName: String
