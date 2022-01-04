@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/stocks_navigation_graph.xml"
+    app:startDestination="@id/schoolsFragment2">
+    <fragment
+        android:id="@+id/schoolsFragment2"
+        android:name="com.example.filmssurf.ui.fragments.SchoolsFragment"
+        android:label="SchoolsFragment" />
+    <fragment
+        android:id="@+id/studentsFragment2"
+        android:name="com.example.filmssurf.ui.fragments.StudentsFragment"
+        android:label="StudentsFragment" />
+    <fragment
+        android:id="@+id/subjectsFragment2"
+        android:name="com.example.filmssurf.ui.fragments.SubjectsFragment"
+        android:label="SubjectsFragment" />
+
+    <dialog
+        android:id="@+id/schoolChangeDialog"
+        android:name="com.example.filmssurf.ui.fragments.adapters.school.SchoolChangeDialog"
+        android:label="SchoolChangeDialog" >
+        <argument
+            android:name="schoolName"
+            app:argType="string" />
+    </dialog>
+    <action
+        android:id="@+id/globalActionToSchoolChangeDialog"
+        app:destination="@id/schoolChangeDialog">
+    </action>
+
+    <dialog
+        android:id="@+id/studentChangeDialog"
+        android:name="com.example.filmssurf.ui.fragments.adapters.student.StudentChangeDialog"
+        android:label="StudentChangeDialog">
+        <argument
+            android:name="studentName"
+            app:argType="string"/>
+    </dialog>
+    <action
+        android:id="@+id/globalActionToStudentChangeDialog"
+        app:destination="@id/studentChangeDialog"/>
+
+    <dialog
+        android:id="@+id/addSubjectsDialog"
+        android:name="com.example.filmssurf.ui.fragments.adapters.student.AddSubjectsDialog"
+        android:label="AddSubjectsDialog" >
+        <argument
+            android:name="studentName"
+            app:argType="string"/>
+    </dialog>
+    <action
+        android:id="@+id/globalActionToAddSubjectsDialog"
+        app:destination="@id/addSubjectsDialog"/>
+
+    <dialog
+        android:id="@+id/addStudentsDialog"
+        android:name="com.example.filmssurf.ui.fragments.adapters.subject.AddStudentsDialog"
+        android:label="AddStudentsDialog">
+        <argument
+            android:name="subjectName"
+            app:argType="string"/>
+    </dialog>
+    <action
+        android:id="@+id/globalActionToAddStudentsDialog"
+        app:destination="@id/addStudentsDialog"/>
+
+</navigation>

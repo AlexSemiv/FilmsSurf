@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/etSchoolName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter new name.."
+        android:maxLines="1"
+        android:minHeight="48dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSchoolName"
+        app:layout_constraintEnd_toEndOf="@+id/etAddress"
+        app:layout_constraintStart_toStartOf="@+id/etAddress"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvSchoolName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Name:"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Address:"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSchoolName" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Specialization:"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <EditText
+        android:id="@+id/etAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter new address.."
+        android:maxLines="1"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="@+id/etSpecialization"
+        app:layout_constraintStart_toEndOf="@+id/textView6" />
+
+    <EditText
+        android:id="@+id/etSpecialization"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:hint="Enter new spec.."
+        android:maxLines="1"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textView6" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

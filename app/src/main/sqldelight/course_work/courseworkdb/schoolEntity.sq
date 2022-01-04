@@ -1,0 +1,67 @@
+CREATE TABLE schoolEntity (
+    _name TEXT NOT NULL PRIMARY KEY,
+    _specialization TEXT NOT NULL,
+    _address TEXT NOT NULL
+);
+
+getSchoolByName:
+SELECT *
+FROM schoolEntity
+WHERE _name = :name;
+
+getSchoolsBySpecialization:
+SELECT *
+FROM schoolEntity
+WHERE _specialization = :specialization
+ORDER BY _name ASC;
+
+getSchoolsByAddress:
+SELECT *
+FROM schoolEntity
+WHERE _address = :address
+ORDER BY _name ASC;
+
+getAllSchoolNames:
+SELECT _name
+FROM schoolEntity
+ORDER BY _name ASC;
+
+getAllSchoolsOrderByName:
+SELECT *
+FROM schoolEntity
+ORDER BY _name ASC;
+
+
+getAllSchoolsOrderByAddress:
+SELECT *
+FROM schoolEntity
+ORDER BY _address ASC;
+
+getAllSchoolsOrderBySpecialization:
+SELECT *
+FROM schoolEntity
+ORDER BY _specialization ASC;
+
+searchSchools:
+SELECT * FROM schoolEntity
+WHERE
+_name LIKE '%' || :query || '%'
+OR _address LIKE  '%' || :query || '%'
+OR _specialization LIKE '%' || :query || '%';
+
+insertSchool:
+INSERT OR REPLACE
+INTO schoolEntity
+VALUES (?, ?, ?);
+
+updateSchoolByName:
+UPDATE schoolEntity
+SET _address = :address, _specialization = :specialization
+WHERE _name = :name;
+
+deleteSchoolByName:
+DELETE FROM schoolEntity
+WHERE _name = :name;
+
+deleteAllSchools:
+DELETE FROM schoolEntity;

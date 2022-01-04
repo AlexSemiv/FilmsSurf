@@ -1,0 +1,30 @@
+CREATE TABLE subjectEntity (
+    _name TEXT NOT NULL PRIMARY KEY
+);
+
+getSubjectByName:
+SELECT *
+FROM subjectEntity
+WHERE _name = :name;
+
+getAllSubjects:
+SELECT *
+FROM subjectEntity
+ORDER BY _name ASC;
+
+insertSubject:
+INSERT OR REPLACE
+INTO subjectEntity
+VALUES (?);
+
+searchSubjects:
+SELECT * FROM subjectEntity
+WHERE
+_name LIKE '%' || :query || '%';
+
+deleteSubjectByName:
+DELETE FROM subjectEntity
+WHERE _name = :name;
+
+deleteAllSubjects:
+DELETE FROM subjectEntity;

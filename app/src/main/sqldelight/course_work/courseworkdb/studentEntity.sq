@@ -1,0 +1,64 @@
+CREATE TABLE studentEntity (
+    _name TEXT NOT NULL PRIMARY KEY,
+    _semester INTEGER NOT NULL,
+    _school_name TEXT NOT NULL,
+    FOREIGN KEY (_school_name)
+    REFERENCES schoolEntity(_name)
+    ON DELETE CASCADE
+);
+
+getStudentByName:
+SELECT *
+FROM studentEntity
+WHERE _name = :name;
+
+getStudentsBySemester:
+SELECT *
+FROM studentEntity
+WHERE _semester = :semester
+ORDER BY _name ASC;
+
+getStudentsBySchoolName:
+SELECT *
+FROM studentEntity
+WHERE _school_name = :schoolName
+ORDER BY _name ASC;
+
+getAllStudentsSortedByName:
+SELECT *
+FROM studentEntity
+ORDER BY _name ASC;
+
+getAllStudentsSortedBySemester:
+SELECT *
+FROM studentEntity
+ORDER BY _semester ASC;
+
+getAllStudentsSortedBySchool:
+SELECT *
+FROM studentEntity
+ORDER BY _school_name ASC;
+
+searchStudents:
+SELECT * FROM studentEntity
+WHERE
+_name LIKE '%' || :query || '%'
+OR _semester LIKE  '%' || :query || '%'
+OR _school_name LIKE '%' || :query || '%';
+
+insertStudent:
+INSERT OR REPLACE
+INTO studentEntity
+VALUES (?, ?, ?);
+
+updateStudentByName:
+UPDATE studentEntity
+SET _semester = :semester, _school_name = :schoolName
+WHERE _name = :name;
+
+deleteStudentByName:
+DELETE FROM studentEntity
+WHERE _name = :name;
+
+deleteAllStudents:
+DELETE FROM studentEntity;

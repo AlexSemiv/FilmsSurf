@@ -1,6 +1,5 @@
 package com.example.filmssurf.other
 
-// generic class that help us to handle all states of data
 sealed class Resource<T>(
     var data: T? = null,
     val error: String? = null
